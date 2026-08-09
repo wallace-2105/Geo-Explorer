@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DesafiosRouteImport } from './routes/desafios'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
+import { Route as TrilhasIdRouteImport } from './routes/trilhas.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesafiosRoute = DesafiosRouteImport.update({
+  id: '/desafios',
+  path: '/desafios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrilhasIndexRoute = TrilhasIndexRouteImport.update({
@@ -22,30 +29,43 @@ const TrilhasIndexRoute = TrilhasIndexRouteImport.update({
   path: '/trilhas/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrilhasIdRoute = TrilhasIdRouteImport.update({
+  id: '/trilhas/$id',
+  path: '/trilhas/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/desafios': typeof DesafiosRoute
+  '/trilhas/$id': typeof TrilhasIdRoute
   '/trilhas/': typeof TrilhasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/desafios': typeof DesafiosRoute
+  '/trilhas/$id': typeof TrilhasIdRoute
   '/trilhas': typeof TrilhasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/desafios': typeof DesafiosRoute
+  '/trilhas/$id': typeof TrilhasIdRoute
   '/trilhas/': typeof TrilhasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/trilhas/'
+  fullPaths: '/' | '/desafios' | '/trilhas/$id' | '/trilhas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/trilhas'
-  id: '__root__' | '/' | '/trilhas/'
+  to: '/' | '/desafios' | '/trilhas/$id' | '/trilhas'
+  id: '__root__' | '/' | '/desafios' | '/trilhas/$id' | '/trilhas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DesafiosRoute: typeof DesafiosRoute
+  TrilhasIdRoute: typeof TrilhasIdRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
 }
 
@@ -58,6 +78,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/desafios': {
+      id: '/desafios'
+      path: '/desafios'
+      fullPath: '/desafios'
+      preLoaderRoute: typeof DesafiosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trilhas/': {
       id: '/trilhas/'
       path: '/trilhas'
@@ -65,11 +92,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrilhasIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trilhas/$id': {
+      id: '/trilhas/$id'
+      path: '/trilhas/$id'
+      fullPath: '/trilhas/$id'
+      preLoaderRoute: typeof TrilhasIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DesafiosRoute: DesafiosRoute,
+  TrilhasIdRoute: TrilhasIdRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,
 }
 export const routeTree = rootRouteImport
