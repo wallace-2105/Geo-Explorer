@@ -14,7 +14,13 @@ const toneClass: Record<string, string> = {
   done: "bg-primary/12 text-primary ring-primary/30",
 };
 
-function Pill({ children, className }: { children: React.ReactNode; className?: string }) {
+function Pill({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string | undefined;
+}) {
   return (
     <span
       className={cn(

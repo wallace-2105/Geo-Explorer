@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Layers, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Trail } from "@/types";
-import { LevelBadge, ProgressBlock, StatusBadge, TechBadge } from "./badges";
+import { LevelBadge, ProgressBlock, StatusBadge, TechBadge } from "@/components/shared/badges";
 
 export function TrailCard({ trail }: { trail: Trail }) {
   const cta =
