@@ -9,11 +9,11 @@ export function PageHeader({
   actions,
   className,
 }: {
-  eyebrow?: string;
+  eyebrow?: string | undefined;
   title: string;
-  description?: string;
-  actions?: ReactNode;
-  className?: string;
+  description?: string | undefined;
+  actions?: ReactNode | undefined;
+  className?: string | undefined;
 }) {
   return (
     <div className={cn("grid gap-4 sm:flex sm:items-end sm:justify-between", className)}>
@@ -37,10 +37,10 @@ export function SectionHeading({
   description,
   action,
 }: {
-  icon?: LucideIcon;
+  icon?: LucideIcon | undefined;
   title: string;
-  description?: string;
-  action?: ReactNode;
+  description?: string | undefined;
+  action?: ReactNode | undefined;
 }) {
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pb-4">

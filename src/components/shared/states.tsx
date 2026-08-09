@@ -11,9 +11,9 @@ export function EmptyState({
   className,
 }: {
   title: string;
-  description?: string;
-  action?: ReactNode;
-  className?: string;
+  description?: string | undefined;
+  action?: ReactNode | undefined;
+  className?: string | undefined;
 }) {
   return (
     <div
@@ -42,10 +42,10 @@ export function ErrorState({
   onRetry,
   className,
 }: {
-  title?: string;
-  description?: string;
-  onRetry?: () => void;
-  className?: string;
+  title?: string | undefined;
+  description?: string | undefined;
+  onRetry?: () => void | undefined;
+  className?: string | undefined;
 }) {
   return (
     <div

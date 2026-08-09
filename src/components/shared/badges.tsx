@@ -59,7 +59,7 @@ export function ProgressBlock({
   label = "Progresso",
 }: {
   value: number;
-  label?: string;
+  label?: string | undefined;
 }) {
   return (
     <div className="space-y-1.5">
@@ -81,7 +81,7 @@ export function StatCard({
   icon: LucideIcon;
   label: string;
   value: string | number;
-  hint?: string;
+  hint?: string | undefined;
 }) {
   return (
     <div className="surface-card group relative overflow-hidden p-5 transition-colors hover:border-primary/40">
