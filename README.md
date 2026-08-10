@@ -1,109 +1,166 @@
-# Geo-Explorer
+<div align="center">
+  
+  # 🚀 Geo-Explorer
+  
+  **Plataforma Full-Stack de Trilhas de Aprendizagem e Desafios para Desenvolvedores**
+  
+  ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+  ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+  ![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+  ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+  ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+</div>
 
-Plataforma full-stack para explorar trilhas de aprendizagem, acompanhar progresso, praticar desafios e emitir certificados fictícios. O frontend existente foi preservado; a API Node.js em `backend/` expõe os contratos que ele já consome.
+---
 
-## Funcionalidades (todas validadas)
+O **Geo-Explorer** é um ecossistema completo (Frontend, Backend, CLI e MCP) desenhado para proporcionar uma experiência imersiva de estudos. Com ele, os usuários podem explorar trilhas de conhecimento, acompanhar o progresso em tempo real, gerar desafios com Inteligência Artificial e emitir certificados exclusivos.
 
-- Catálogo com seis tecnologias, filtros por tecnologia, nível, status e busca livre.
-- Matrícula e progresso por módulo/trilha com persistência em memória.
-- Geração e avaliação segura de desafios — não executa código enviado pelo usuário.
-- Adaptador de IA com fallback local automático quando nenhuma chave está configurada.
-- Certificados fictícios com credencial única (`GEO-XXX-YYYY-ZZZZZZZZ`) para trilhas concluídas.
-- REST documentado por Swagger/OpenAPI, CLI interativa e servidor MCP por stdio.
+Tudo isso envelopado em um design moderno (*dark tech*) com micro-animações, feedback instantâneo e uma arquitetura escalável pronta para o mercado.
 
-## Arquitetura
+---
 
-`Frontend → REST controllers → Services → Repositories`. As ferramentas MCP e a CLI chamam os mesmos services; não há lógica de negócio duplicada. Consulte [docs/architecture.md](docs/architecture.md) para o detalhamento.
+## ✨ Principais Funcionalidades
 
-## Tecnologias
+### 🎓 **Trilhas de Aprendizagem**
+- Catálogo completo cobrindo 6 tecnologias principais (JavaScript, TypeScript, Python, Java, Node.js e React).
+- Sistema de filtros instantâneos por nível (Iniciante, Intermediário, Avançado), tecnologia e status.
+- Busca livre integrada.
+- Matrícula e acompanhamento de progresso granular (módulo a módulo).
 
-React, Vite, TanStack Query/Router, Node.js, TypeScript strict, Express 5, Zod, Helmet, CORS, rate limiting, Swagger/OpenAPI, Vitest e MCP SDK.
+### 🧠 **Geração e Correção de Desafios via IA**
+- Motor adaptativo que gera desafios de código com base no nível e tecnologia escolhidos.
+- Sistema de submissão de soluções com feedback de pontuação (`score`) e status de aprovação.
+- Correção estática (via IA ou mock fallback) para garantir total **segurança** (nenhum código arbitrário do usuário é executado no servidor).
+- Suporte a fallback offline: caso não haja chave de API (OpenAI) configurada, um *MockAIProvider* assume para não quebrar a experiência.
 
-## Instalação e execução
+### 🏆 **Sistema de Certificados**
+- Emissão automática de certificados quando 100% de uma trilha é concluída.
+- Geração de Credencial Única (ex: `GEO-XXX-YYYY-ZZZZZZZZ`) para validação.
+- Listagem e visualização do histórico de certificados do usuário.
 
+### 🛠️ **Integração Omnichannel (REST, CLI e MCP)**
+A lógica de negócio central (Services) é consumida por 3 frentes distintas:
+1. **Frontend Moderno (Web):** Interface rica em React.
+2. **CLI (Linha de Comando):** Ferramenta para interagir com as trilhas direto do terminal.
+3. **MCP Server (Model Context Protocol):** Integração para Agentes de IA interagirem nativamente com a plataforma.
+
+---
+
+## 💻 Tecnologias Utilizadas
+
+O projeto adota o estado da arte do ecossistema JavaScript/TypeScript:
+
+### **Frontend**
+- **React 18** + **Vite**
+- **TanStack Router** (Roteamento Type-Safe)
+- **TanStack Query** (Gerenciamento de estado do servidor e caching)
+- **Tailwind CSS** + **Radix UI** + **Lucide Icons** (Design System e Acessibilidade)
+
+### **Backend**
+- **Node.js** + **Express 5** (API RESTful)
+- **TypeScript Strict Mode** (100% tipado de ponta a ponta)
+- **Zod** (Validação implacável de payloads e queries)
+- **CORS** + **Helmet** + **Express Rate Limit** (Segurança extrema)
+- **Swagger / OpenAPI** (Documentação viva)
+
+### **Ferramentas e Arquitetura**
+- **Vitest** (Testes unitários e de integração hiper-rápidos)
+- **Model Context Protocol (MCP) SDK**
+- **Arquitetura em Camadas:** `Controllers → Services → Repositories` (Baixo acoplamento)
+- Banco de dados **Em Memória** (Ideal para demonstração rápida, pronto para plugar um Prisma/PostgreSQL no futuro trocando apenas os Repositories).
+
+---
+
+## ⚙️ Instalação e Configuração
+
+### 1. Clonando e Instalando Dependências
 ```bash
+git clone https://github.com/wallace-2105/Geo-Explorer.git
+cd Geo-Explorer
 npm install
-Copy-Item .env.example .env   # PowerShell
-# ou: copy .env.example .env  # cmd
-npm run dev:api   # backend em http://localhost:3334/api
-npm run dev       # frontend em http://localhost:8080
 ```
 
-O frontend lê `VITE_USE_MOCKS` e `VITE_API_URL` do arquivo `.env` na raiz. Copie `.env.example` para `.env` antes de iniciar para que o frontend conecte na API real. Reinicie o Vite após qualquer mudança nas variáveis `VITE_*`.
+### 2. Configurando as Variáveis de Ambiente
+O Frontend e o Backend precisam do arquivo `.env` configurado.
+```bash
+# Se estiver no Windows (PowerShell):
+Copy-Item .env.example .env
 
-> **Windows — conflito de porta:** o Autodesk AM Service usa a porta `3333` (127.0.0.1:3333) neste ambiente. O backend usa `3334` por padrão para evitar o conflito.
+# Se estiver no Linux / Mac / CMD:
+cp .env.example .env
+```
+*(Certifique-se de que `VITE_USE_MOCKS=false` no `.env` para usar a API real).*
 
-## Scripts
+### 3. Rodando o Projeto (Dois Terminais)
+
+Você precisará de dois terminais abertos para rodar o ecossistema completo.
+
+**Terminal 1 (Inicia a API Backend na porta 3334):**
+```bash
+npm run dev:api
+```
+
+**Terminal 2 (Inicia o Frontend Web na porta 8080):**
+```bash
+npm run dev
+```
+
+> ⚠️ **Nota para usuários de Windows:** O backend utiliza a porta `3334` nativamente porque o serviço *Autodesk AM* costuma conflitar com a porta 3333. A comunicação entre as portas já está coberta pelo CORS.
+
+---
+
+## 📖 Documentação da API (Swagger)
+
+Com o backend rodando, acesse a interface interativa do **Swagger** em:
+👉 **[http://localhost:3334/api/docs](http://localhost:3334/api/docs)**
+
+Todos os contratos de entrada e saída, além de testes *Try-it-out*, estão disponíveis lá. O JSON da especificação fica em `/api/openapi.json`.
+
+---
+
+## ⌨️ Usando a CLI (Command Line Interface)
+
+O projeto inclui uma CLI interativa incrível. Experimente os comandos abaixo:
 
 ```bash
-npm run dev         # frontend (http://localhost:8080)
-npm run dev:api     # API REST (http://localhost:3334)
-npm run dev:mcp     # MCP Server por stdio
-npm run build       # build do frontend
-npm run build:api   # compila o backend TypeScript
-npm run typecheck   # typecheck frontend + backend
-npm run lint        # eslint
-npm run test        # 7 testes Vitest (services, REST, MCP)
+# Buscar trilhas disponíveis de uma tecnologia:
 npm run cli -- trail TypeScript Iniciante
+
+# Gerar um desafio de código:
 npm run cli -- challenge JavaScript Avançado
-npm run cli -- certificate NomeAluno React
+
+# Emitir ou buscar um certificado:
+npm run cli -- certificate NomeDoAluno React
 ```
 
-## API e Swagger
+---
 
-Com a API em execução, a documentação interativa está em [http://localhost:3334/api/docs](http://localhost:3334/api/docs), e o JSON OpenAPI em `/api/openapi.json`.
+## 🤖 Servidor MCP (Model Context Protocol)
 
-Principais rotas:
+O Geo-Explorer pode servir como provedor de contexto e ferramentas para Agentes de IA. 
+O servidor MCP expõe as *tools*: `list_learning_trails`, `get_learning_trail`, `generate_challenge`, `get_challenge`, `generate_certificate`, `get_certificate` e `get_learning_progress`.
 
-```text
-GET  /api/health
-GET  /api/trails?technology=TypeScript&level=Iniciante
-GET  /api/trails/:id
-POST /api/trails/:id/enroll
-POST /api/challenges/generate
-POST /api/challenges/submissions
-GET  /api/challenges/history
-GET  /api/challenges/:id
-GET  /api/certificates
-POST /api/certificates
-GET  /api/certificates/:id
-GET  /api/progress/:userId
-POST /api/progress
-GET  /api/me
+Para rodar via STDIO (como esperado por clientes MCP):
+```bash
+npm run dev:mcp
 ```
+*(Para configurar em clientes como Cursor ou Claude Desktop, aponte o comando para `npx tsx backend/src/mcp/index.ts`)*.
 
-As respostas de sucesso seguem `{ "data": ... }`. Erros seguem `{ "error": { "code", "message" } }`.
+---
 
-Exemplo de desafio:
+## ✅ Testes e Qualidade
+
+O projeto é coberto por testes rápidos utilizando o **Vitest**, garantindo que as regras de negócio, a resposta da API e o MCP funcionem perfeitamente.
 
 ```bash
-curl -X POST http://localhost:3334/api/challenges/generate \
-  -H "Content-Type: application/json" \
-  -d '{"technology":"TypeScript","level":"Iniciante","difficulty":"easy"}'
+npm run test        # Roda a suíte de testes (7 testes core)
+npm run typecheck   # Valida a tipagem estática do Front e Back
+npm run lint        # Análise de estilo de código
 ```
 
-## IA e segurança
+---
 
-Por padrão, `AI_PROVIDER=mock`, permitindo demonstração sem credenciais. Para um endpoint compatível com Chat Completions, configure `AI_PROVIDER=openai-compatible`, `AI_API_KEY`, `AI_MODEL` e, opcionalmente, `AI_BASE_URL`. Segredos nunca devem ser versionados.
-
-A avaliação de solução é baseada em IA/mock e não executa código arbitrário no processo da API. A troca por sandbox isolado é uma evolução futura deliberada.
-
-## MCP e CLI
-
-O servidor MCP expõe `list_learning_trails`, `get_learning_trail`, `generate_challenge`, `get_challenge`, `generate_certificate`, `get_certificate` e `get_learning_progress`. Execute `npm run dev:mcp` e configure o cliente MCP com o comando `npx tsx backend/src/mcp/index.ts`.
-
-Exemplos de CLI:
-
-```bash
-npm run cli -- trail JavaScript Iniciante
-npm run cli -- challenge Python Intermediário
-npm run cli -- certificate Wallace React
-```
-
-## Testes
-
-`npm run test` cobre os services, os principais contratos REST, validação, progresso, fallback de desafios e handlers MCP — 7 testes, todos passando. A persistência em memória foi escolhida intencionalmente; repositories isolam essa decisão, permitindo introduzir banco de dados depois sem alterar services ou transportes.
-
-## Persistência
-
-Os repositories em memória são reiniciados a cada restart do backend. Esse comportamento é intencional para demonstração. Os certificados, desafios e progresso gerados durante uma sessão não sobrevivem ao reinício do processo.
+<div align="center">
+  <i>Feito com capricho para o ecossistema moderno de desenvolvimento.</i>
+</div>
