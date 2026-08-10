@@ -1,4 +1,4 @@
-# Trailblazer Hub
+
 
 Projeto: Geo-Explorer
 
