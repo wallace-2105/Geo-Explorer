@@ -2,7 +2,7 @@
 
 Plataforma full-stack para explorar trilhas de aprendizagem, acompanhar progresso, praticar desafios e emitir certificados fictícios. O frontend existente foi preservado; a API Node.js em `backend/` expõe os contratos que ele já consome.
 
-## Funcionalidades (todas validadas)
+## Funcionalidades (todas validadas
 
 - Catálogo com seis tecnologias, filtros por tecnologia, nível, status e busca livre.
 - Matrícula e progresso por módulo/trilha com persistência em memória.
