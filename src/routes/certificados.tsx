@@ -62,7 +62,7 @@ function CertificatesPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => void navigate({ to: ".", search: {} })}
+                onClick={() => void navigate({ to: ".", search: { id: undefined } })}
               >
                 <X className="size-4" aria-hidden="true" />
                 Fechar

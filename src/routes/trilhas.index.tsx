@@ -51,8 +51,7 @@ function TrailsPage() {
   );
 
   const { data, isPending, isError, refetch } = useTrails(filters);
-  const hasFilters =
-    search !== "" || technology !== "all" || level !== "all" || status !== "all";
+  const hasFilters = search !== "" || technology !== "all" || level !== "all" || status !== "all";
 
   function clearFilters() {
     setSearch("");

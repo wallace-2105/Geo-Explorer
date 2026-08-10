@@ -63,17 +63,11 @@ export const mockTrails: Trail[] = [
         ],
         true,
       ),
-      mod(
-        "ts-m3",
-        3,
-        "Generics na prática",
-        "Funções e estruturas reutilizáveis com generics.",
-        [
-          ["Introdução a generics", "video", 24],
-          ["Constraints e defaults", "reading", 15],
-          ["Exercício: um Result<T, E>", "exercise", 45],
-        ],
-      ),
+      mod("ts-m3", 3, "Generics na prática", "Funções e estruturas reutilizáveis com generics.", [
+        ["Introdução a generics", "video", 24],
+        ["Constraints e defaults", "reading", 15],
+        ["Exercício: um Result<T, E>", "exercise", 45],
+      ]),
       mod(
         "ts-m4",
         4,
@@ -121,17 +115,11 @@ export const mockTrails: Trail[] = [
         ],
         true,
       ),
-      mod(
-        "nd-m2",
-        2,
-        "Arquitetura em camadas",
-        "Controllers, use cases e repositórios.",
-        [
-          ["Separando responsabilidades", "video", 30],
-          ["Injeção de dependências", "reading", 20],
-          ["Exercício: refatorando um controller", "exercise", 50],
-        ],
-      ),
+      mod("nd-m2", 2, "Arquitetura em camadas", "Controllers, use cases e repositórios.", [
+        ["Separando responsabilidades", "video", 30],
+        ["Injeção de dependências", "reading", 20],
+        ["Exercício: refatorando um controller", "exercise", 50],
+      ]),
       mod("nd-m3", 3, "Validação e erros", "Zod, mapeamento de erros e contratos.", [
         ["Validação de entrada", "video", 22],
         ["Erros de domínio vs HTTP", "reading", 16],
@@ -149,11 +137,7 @@ export const mockTrails: Trail[] = [
       title: "API de trilhas de aprendizagem",
       description:
         "Implemente a API REST que alimenta este próprio produto: trilhas, desafios e certificados.",
-      deliverables: [
-        "Endpoints documentados",
-        "Testes de integração",
-        "Pipeline de CI",
-      ],
+      deliverables: ["Endpoints documentados", "Testes de integração", "Pipeline de CI"],
     },
   },
   {
@@ -170,27 +154,54 @@ export const mockTrails: Trail[] = [
     estimatedHours: 26,
     tags: ["performance", "padrões", "hooks"],
     modules: [
-      mod("rc-m1", 1, "Modelo de renderização", "Como o React decide re-renderizar.", [
-        ["Reconciliação", "video", 28],
-        ["Chaves e listas", "reading", 14],
-      ], true),
-      mod("rc-m2", 2, "Padrões de composição", "Slots, compound components e context.", [
-        ["Compound components", "video", 32],
-        ["Exercício: um Tabs acessível", "exercise", 55],
-      ], true),
-      mod("rc-m3", 3, "Estado assíncrono", "Cache, invalidação e estados de erro.", [
-        ["Cache de servidor", "video", 26],
-        ["Retry e fallback", "reading", 16],
-      ], true),
-      mod("rc-m4", 4, "Performance real", "Profiler, listas virtuais e code splitting.", [
-        ["Medindo antes de otimizar", "video", 22],
-        ["Projeto final", "project", 130],
-      ], true),
+      mod(
+        "rc-m1",
+        1,
+        "Modelo de renderização",
+        "Como o React decide re-renderizar.",
+        [
+          ["Reconciliação", "video", 28],
+          ["Chaves e listas", "reading", 14],
+        ],
+        true,
+      ),
+      mod(
+        "rc-m2",
+        2,
+        "Padrões de composição",
+        "Slots, compound components e context.",
+        [
+          ["Compound components", "video", 32],
+          ["Exercício: um Tabs acessível", "exercise", 55],
+        ],
+        true,
+      ),
+      mod(
+        "rc-m3",
+        3,
+        "Estado assíncrono",
+        "Cache, invalidação e estados de erro.",
+        [
+          ["Cache de servidor", "video", 26],
+          ["Retry e fallback", "reading", 16],
+        ],
+        true,
+      ),
+      mod(
+        "rc-m4",
+        4,
+        "Performance real",
+        "Profiler, listas virtuais e code splitting.",
+        [
+          ["Medindo antes de otimizar", "video", 22],
+          ["Projeto final", "project", 130],
+        ],
+        true,
+      ),
     ],
     finalProject: {
       title: "Painel analítico com 10k linhas",
-      description:
-        "Construa um painel com filtros, ordenação e virtualização mantendo 60fps.",
+      description: "Construa um painel com filtros, ordenação e virtualização mantendo 60fps.",
       deliverables: ["Lista virtualizada", "Relatório de profiling", "Acessibilidade validada"],
     },
   },
@@ -276,9 +287,14 @@ export const mockTrails: Trail[] = [
     estimatedHours: 30,
     tags: ["oop", "spring", "domínio"],
     modules: [
-      mod("jv-m1", 1, "Domínio rico", "Entidades, value objects e agregados.", [
-        ["Modelando agregados", "video", 34],
-      ], true),
+      mod(
+        "jv-m1",
+        1,
+        "Domínio rico",
+        "Entidades, value objects e agregados.",
+        [["Modelando agregados", "video", 34]],
+        true,
+      ),
       mod("jv-m2", 2, "Casos de uso", "Serviços de aplicação e transações.", [
         ["Fronteiras transacionais", "reading", 20],
         ["Exercício: caso de uso de matrícula", "exercise", 55],
@@ -286,9 +302,7 @@ export const mockTrails: Trail[] = [
       mod("jv-m3", 3, "Persistência", "Mapeamento e repositórios.", [
         ["Repositórios", "video", 28],
       ]),
-      mod("jv-m4", 4, "Entrega", "Testes e empacotamento.", [
-        ["Projeto final", "project", 140],
-      ]),
+      mod("jv-m4", 4, "Entrega", "Testes e empacotamento.", [["Projeto final", "project", 140]]),
     ],
     finalProject: {
       title: "Serviço de matrículas",

@@ -3,11 +3,7 @@ import { certificatesService } from "@/services/certificates";
 import { challengesService } from "@/services/challenges";
 import { trailsService } from "@/services/trails";
 import { userService } from "@/services/user";
-import type {
-  ChallengeSubmission,
-  GenerateChallengeInput,
-  TrailFilters,
-} from "@/types";
+import type { ChallengeSubmission, GenerateChallengeInput, TrailFilters } from "@/types";
 
 export const queryKeys = {
   profile: ["profile"] as const,

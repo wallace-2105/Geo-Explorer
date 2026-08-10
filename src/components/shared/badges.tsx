@@ -47,7 +47,9 @@ export function LevelBadge({ level }: { level: Level }) {
 }
 
 export function DifficultyBadge({ difficulty }: { difficulty: Difficulty }) {
-  return <Pill className={toneClass[difficultyTone[difficulty]]}>{DIFFICULTY_LABEL[difficulty]}</Pill>;
+  return (
+    <Pill className={toneClass[difficultyTone[difficulty]]}>{DIFFICULTY_LABEL[difficulty]}</Pill>
+  );
 }
 
 export function StatusBadge({ status }: { status: TrailStatus }) {

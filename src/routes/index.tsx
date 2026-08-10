@@ -1,13 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  Award,
-  ArrowRight,
-  Flame,
-  ListChecks,
-  Sparkles,
-  Target,
-  TrendingUp,
-} from "lucide-react";
+import { Award, ArrowRight, Flame, ListChecks, Sparkles, Target, TrendingUp } from "lucide-react";
 import { CertificateCardMini } from "@/components/certificates/certificate-card-mini";
 import { PageHeader, SectionHeading } from "@/components/shared/page-header";
 import { StatCard, DifficultyBadge, TechBadge } from "@/components/shared/badges";
@@ -59,7 +51,10 @@ function DashboardPage() {
   return (
     <div className="mx-auto w-full max-w-7xl space-y-12 px-4 py-8 sm:px-6 sm:py-12">
       <section className="hero-surface relative overflow-hidden rounded-2xl border border-border p-6 sm:p-10">
-        <div className="grid-backdrop pointer-events-none absolute inset-0 opacity-70" aria-hidden="true" />
+        <div
+          className="grid-backdrop pointer-events-none absolute inset-0 opacity-70"
+          aria-hidden="true"
+        />
         <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <div className="min-w-0 space-y-3">
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">
@@ -69,8 +64,8 @@ function DashboardPage() {
               {greeting()}, {profile.data ? firstName(profile.data.name) : "dev"}.
             </h1>
             <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
-              Continue de onde parou, resolva um desafio novo e some mais um certificado
-              à sua jornada.
+              Continue de onde parou, resolva um desafio novo e some mais um certificado à sua
+              jornada.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -166,7 +161,11 @@ function DashboardPage() {
       </section>
 
       <section aria-labelledby="disponiveis">
-        <SectionHeading icon={ListChecks} title="Trilhas disponíveis" description="Sugestões para você" />
+        <SectionHeading
+          icon={ListChecks}
+          title="Trilhas disponíveis"
+          description="Sugestões para você"
+        />
         <h2 id="disponiveis" className="sr-only">
           Trilhas disponíveis
         </h2>
@@ -206,7 +205,10 @@ function DashboardPage() {
           ) : (
             <ul className="surface-card divide-y divide-border">
               {history.data.map((item) => (
-                <li key={item.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4">
+                <li
+                  key={item.id}
+                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4"
+                >
                   <div className="min-w-0 space-y-1.5">
                     <p className="truncate text-sm font-medium">{item.challengeTitle}</p>
                     <div className="flex flex-wrap items-center gap-2">
@@ -224,7 +226,9 @@ function DashboardPage() {
                     >
                       {item.status === "passed" ? "Aprovado" : "Reprovado"}
                     </p>
-                    <p className="text-xs text-muted-foreground">{formatShortDate(item.solvedAt)}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatShortDate(item.solvedAt)}
+                    </p>
                   </div>
                 </li>
               ))}
@@ -238,7 +242,9 @@ function DashboardPage() {
             title="Certificados conquistados"
             action={
               <Button asChild variant="ghost" size="sm">
-                <Link to="/certificados">Ver todos</Link>
+                <Link to="/certificados" search={{ id: undefined }}>
+                  Ver todos
+                </Link>
               </Button>
             }
           />
@@ -250,7 +256,10 @@ function DashboardPage() {
           ) : certificates.isError ? (
             <ErrorState onRetry={() => void certificates.refetch()} />
           ) : certificates.data.length === 0 ? (
-            <EmptyState title="Nenhum certificado" description="Conclua uma trilha para emitir o primeiro." />
+            <EmptyState
+              title="Nenhum certificado"
+              description="Conclua uma trilha para emitir o primeiro."
+            />
           ) : (
             <div className="grid gap-3">
               {certificates.data.slice(0, 3).map((cert) => (

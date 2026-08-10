@@ -1,9 +1,4 @@
-import type {
-  Challenge,
-  ChallengeHistoryItem,
-  GenerateChallengeInput,
-  Technology,
-} from "@/types";
+import type { Challenge, ChallengeHistoryItem, GenerateChallengeInput, Technology } from "@/types";
 
 const LANGUAGE_BY_TECH: Record<Technology, string> = {
   JavaScript: "javascript",
@@ -19,10 +14,8 @@ const STARTER: Record<string, string> = {
   typescript:
     "export function resolver(entrada: string[]): string[] {\n  // sua solução aqui\n  return [];\n}\n",
   python: "def resolver(entrada):\n    # sua solução aqui\n    pass\n",
-  java:
-    "public class Solucao {\n    public static void main(String[] args) {\n        // sua solução aqui\n    }\n}\n",
-  tsx:
-    "export function Componente() {\n  // sua solução aqui\n  return null;\n}\n",
+  java: "public class Solucao {\n    public static void main(String[] args) {\n        // sua solução aqui\n    }\n}\n",
+  tsx: "export function Componente() {\n  // sua solução aqui\n  return null;\n}\n",
 };
 
 /** Mock que simula o desafio que a IA do backend irá gerar. */
@@ -46,14 +39,17 @@ export function buildMockChallenge(input: GenerateChallengeInput): Challenge {
     ],
     examples: [
       {
-        input: '[{"id":"a","timestamp":"2026-01-01T10:00:00Z"},{"id":"b","timestamp":"2026-01-01T10:03:00Z"}]',
+        input:
+          '[{"id":"a","timestamp":"2026-01-01T10:00:00Z"},{"id":"b","timestamp":"2026-01-01T10:03:00Z"}]',
         output: '[["a","b"]]',
         explanation: "Os dois eventos estão a 3 minutos de distância, então ficam na mesma janela.",
       },
       {
-        input: '[{"id":"a","timestamp":"2026-01-01T10:00:00Z"},{"id":"b","timestamp":"2026-01-01T10:30:00Z"}]',
+        input:
+          '[{"id":"a","timestamp":"2026-01-01T10:00:00Z"},{"id":"b","timestamp":"2026-01-01T10:30:00Z"}]',
         output: '[["a"],["b"]]',
-        explanation: "O intervalo é maior que 5 minutos, então cada evento abre sua própria janela.",
+        explanation:
+          "O intervalo é maior que 5 minutos, então cada evento abre sua própria janela.",
       },
     ],
     starterCode: STARTER[language] ?? "",

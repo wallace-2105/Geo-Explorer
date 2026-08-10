@@ -216,7 +216,10 @@ function ChallengesPage() {
                   <ul className="space-y-1.5">
                     {challenge.requirements.map((req) => (
                       <li key={req} className="flex gap-2 text-sm text-muted-foreground">
-                        <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                        <span
+                          aria-hidden="true"
+                          className="mt-2 size-1.5 shrink-0 rounded-full bg-primary"
+                        />
                         {req}
                       </li>
                     ))}

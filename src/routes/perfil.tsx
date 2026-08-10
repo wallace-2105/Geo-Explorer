@@ -74,10 +74,7 @@ function ProfilePage() {
                 {profile.data.email} · membro desde {formatDate(profile.data.memberSince)}
               </p>
               <div className="max-w-sm pt-2">
-                <ProgressBlock
-                  value={profile.data.stats.currentProgress}
-                  label="Progresso geral"
-                />
+                <ProgressBlock value={profile.data.stats.currentProgress} label="Progresso geral" />
               </div>
             </div>
           </div>
@@ -149,7 +146,10 @@ function ProfilePage() {
           ) : (
             <ul className="surface-card divide-y divide-border">
               {completedTrails.map((trail) => (
-                <li key={trail.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4">
+                <li
+                  key={trail.id}
+                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4"
+                >
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium">{trail.title}</p>
                     <p className="text-xs text-muted-foreground">

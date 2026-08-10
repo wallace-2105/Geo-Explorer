@@ -8,7 +8,10 @@ export function CertificatePreview({ certificate }: { certificate: Certificate }
       aria-label={`Certificado da trilha ${certificate.trailName}`}
       className="hero-surface relative overflow-hidden rounded-2xl border border-primary/25 bg-surface p-6 sm:p-10"
     >
-      <div className="grid-backdrop pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
+      <div
+        className="grid-backdrop pointer-events-none absolute inset-0 opacity-60"
+        aria-hidden="true"
+      />
       <div className="relative space-y-8">
         <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
           <div className="flex min-w-0 items-center gap-2.5">
@@ -51,7 +54,9 @@ export function CertificatePreview({ certificate }: { certificate: Certificate }
             <dd className="mt-1 text-sm font-medium">{formatDate(certificate.issuedAt)}</dd>
           </div>
           <div>
-            <dt className="text-xs uppercase tracking-wider text-muted-foreground">Identificador</dt>
+            <dt className="text-xs uppercase tracking-wider text-muted-foreground">
+              Identificador
+            </dt>
             <dd className="mt-1 font-mono text-sm font-medium">{certificate.credentialId}</dd>
           </div>
         </dl>

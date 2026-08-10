@@ -17,10 +17,7 @@ export function EmptyState({
 }) {
   return (
     <div
-      className={cn(
-        "surface-card grid place-items-center gap-3 px-6 py-14 text-center",
-        className,
-      )}
+      className={cn("surface-card grid place-items-center gap-3 px-6 py-14 text-center", className)}
     >
       <span className="grid size-12 place-items-center rounded-2xl bg-secondary text-muted-foreground">
         <Inbox className="size-6" aria-hidden="true" />
@@ -74,11 +71,7 @@ export function ErrorState({
 
 export function CardSkeletonGrid({ count = 3 }: { count?: number }) {
   return (
-    <div
-      className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
-      aria-busy="true"
-      aria-live="polite"
-    >
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-busy="true" aria-live="polite">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="surface-card space-y-4 p-5">
           <div className="flex gap-2">

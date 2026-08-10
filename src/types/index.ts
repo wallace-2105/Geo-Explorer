@@ -5,13 +5,7 @@
  * estes contratos.
  */
 
-export type Technology =
-  | "JavaScript"
-  | "TypeScript"
-  | "Python"
-  | "Java"
-  | "Node.js"
-  | "React";
+export type Technology = "JavaScript" | "TypeScript" | "Python" | "Java" | "Node.js" | "React";
 
 export const TECHNOLOGIES: Technology[] = [
   "JavaScript",

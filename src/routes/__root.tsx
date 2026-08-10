@@ -80,10 +80,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Geo-Explorer | Trilhas de aprendizagem para desenvolvedores" },
-      { name: "description", content: "Explore trilhas de programação, gere desafios e conquiste certificados." },
+      {
+        name: "description",
+        content: "Explore trilhas de programação, gere desafios e conquiste certificados.",
+      },
       { name: "author", content: "Lovable" },
       { property: "og:title", content: "Geo-Explorer" },
-      { property: "og:description", content: "Plataforma de trilhas de aprendizagem para desenvolvedores." },
+      {
+        property: "og:description",
+        content: "Plataforma de trilhas de aprendizagem para desenvolvedores.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },

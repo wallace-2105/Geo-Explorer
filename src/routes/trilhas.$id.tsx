@@ -11,12 +11,7 @@ import {
   Timer,
 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  LevelBadge,
-  ProgressBlock,
-  StatusBadge,
-  TechBadge,
-} from "@/components/shared/badges";
+import { LevelBadge, ProgressBlock, StatusBadge, TechBadge } from "@/components/shared/badges";
 import { ErrorState } from "@/components/shared/states";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -116,7 +111,10 @@ function TrailDetailPage() {
       </Button>
 
       <header className="hero-surface relative overflow-hidden rounded-2xl border border-border p-6 sm:p-8">
-        <div className="grid-backdrop pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
+        <div
+          className="grid-backdrop pointer-events-none absolute inset-0 opacity-60"
+          aria-hidden="true"
+        />
         <div className="relative space-y-5">
           <div className="flex flex-wrap gap-2">
             <TechBadge technology={trail.technology} />

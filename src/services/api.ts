@@ -46,10 +46,7 @@ export async function apiRequest<T>(
   }
 
   if (!response.ok) {
-    throw new ApiError(
-      `A requisição falhou (${response.status}).`,
-      response.status,
-    );
+    throw new ApiError(`A requisição falhou (${response.status}).`, response.status);
   }
 
   const payload = (await response.json()) as { data?: T } | T;
