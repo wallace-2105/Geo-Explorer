@@ -6,33 +6,7 @@ Quero construir uma aplicação web chamada Geo-Explorer, uma plataforma de expl
 
 Este projeto será utilizado como projeto de portfólio e posteriormente terá um backend completo desenvolvido em Node.js + TypeScript, com testes automatizados, arquitetura organizada, MCP e integração com IA.
 
-IMPORTANTE
 
-Neste momento, quero que você trabalhe principalmente na interface e estrutura frontend.
-
-Não implemente uma solução fake complexa de backend.
-
-A aplicação deve ser preparada para futuramente consumir uma API REST real.
-
-O backend será desenvolvido posteriormente por outro agente.
-
-Objetivo do produto
-
-O usuário poderá:
-
-Explorar trilhas de aprendizagem.
-
-Escolher uma tecnologia.
-
-Escolher seu nível.
-
-Visualizar módulos e conteúdos da trilha.
-
-Gerar um desafio de programação.
-
-Visualizar um certificado fictício após concluir uma trilha.
-
-Posteriormente interagir com recursos de IA através do backend/MCP.
 
 Stack desejada para o frontend
 
