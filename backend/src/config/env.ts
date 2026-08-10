@@ -2,7 +2,7 @@ import "dotenv/config";
 import { z } from "zod";
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  PORT: z.coerce.number().int().positive().default(3333),
+  PORT: z.coerce.number().int().positive().default(3334),
   CORS_ORIGIN: z.string().default("http://localhost:3000"),
   AI_PROVIDER: z.enum(["mock", "openai-compatible"]).default("mock"),
   AI_API_KEY: z.string().optional(),

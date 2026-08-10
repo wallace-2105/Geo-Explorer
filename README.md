@@ -28,13 +28,13 @@ npm run dev:api
 npm run dev
 ```
 
-No PowerShell, use `Copy-Item .env.example .env`. O frontend usará a API se `VITE_USE_MOCKS=false` e `VITE_API_URL=http://localhost:3333/api`; reinicie o Vite após mudar variáveis. Sem `.env`, o backend usa porta 3333 e IA mock, enquanto o frontend mantém os mocks por padrão.
+No PowerShell, use `Copy-Item .env.example .env`. O frontend usará a API se `VITE_USE_MOCKS=false` e `VITE_API_URL=http://localhost:3334/api`; reinicie o Vite após mudar variáveis. Sem `.env`, o backend usa porta 3334 e IA mock, enquanto o frontend mantém os mocks por padrão.
 
 ## Scripts
 
 ```bash
 npm run dev        # frontend
-npm run dev:api    # API REST em http://localhost:3333
+npm run dev:api    # API REST em http://localhost:3334
 npm run dev:mcp    # MCP por stdio
 npm run build      # build do frontend
 npm run build:api  # compila o backend
@@ -46,7 +46,7 @@ npm run cli -- trail TypeScript Iniciante
 
 ## API e Swagger
 
-Com a API em execução, a documentação interativa está em [http://localhost:3333/api/docs](http://localhost:3333/api/docs), e o JSON OpenAPI em `/api/openapi.json`.
+Com a API em execução, a documentação interativa está em [http://localhost:3334/api/docs](http://localhost:3334/api/docs), e o JSON OpenAPI em `/api/openapi.json`.
 
 Principais rotas:
 
@@ -68,7 +68,7 @@ As respostas de sucesso seguem `{ "data": ... }`. Erros seguem `{ "error": { "co
 Exemplo de desafio:
 
 ```bash
-curl -X POST http://localhost:3333/api/challenges/generate \
+curl -X POST http://localhost:3334/api/challenges/generate \
   -H "Content-Type: application/json" \
   -d '{"technology":"TypeScript","level":"Iniciante","difficulty":"easy"}'
 ```
