@@ -34,6 +34,20 @@ function NavLinks({ onNavigate, vertical }: { onNavigate?: () => void; vertical?
   );
 }
 
+function GeoBadge() {
+  return (
+    <a
+      href="https://github.com/wallace-2105/Geo-Explorer"
+      target="_blank"
+      rel="noreferrer"
+      className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2 rounded-full border border-primary/30 bg-background/90 px-4 py-2 text-sm font-medium text-primary shadow-glow backdrop-blur-xl transition-all hover:scale-105 hover:bg-primary/10 hover:border-primary/50"
+    >
+      <Hexagon className="size-4" />
+      <span>Powered by Geo-Explorer</span>
+    </a>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -108,6 +122,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </p>
         </div>
       </footer>
+      <GeoBadge />
     </div>
   );
 }

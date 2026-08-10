@@ -201,3 +201,8 @@
 @utility glow-ring {
   box-shadow: var(--shadow-glow);
 }
+
+/* Hide lovable badge */
+#lovable-badge, [class*='lovable-badge'], [id*='lovable-badge'] {
+  display: none !important;
+}
