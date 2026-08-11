@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Globe2 } from "lucide-react";
+import { Menu, Compass } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -42,7 +42,7 @@ function GeoBadge() {
       rel="noreferrer"
       className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2 rounded-full border border-primary/30 bg-background/90 px-4 py-2 text-sm font-medium text-primary shadow-glow backdrop-blur-xl transition-all hover:scale-105 hover:bg-primary/10 hover:border-primary/50"
     >
-      <Globe2 className="size-4" />
+      <Compass className="size-4" />
       <span>Powered by Geo-Explorer</span>
     </a>
   );
@@ -69,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             aria-label="Geo-Explorer, início"
           >
             <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
-              <Globe2 className="size-5" aria-hidden="true" />
+              <Compass className="size-5" aria-hidden="true" />
             </span>
             <span className="min-w-0">
               <span className="block truncate font-display text-base font-semibold leading-none">
