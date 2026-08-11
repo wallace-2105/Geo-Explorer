@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Hexagon } from "lucide-react";
+import { Menu, Globe2 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -42,7 +42,7 @@ function GeoBadge() {
       rel="noreferrer"
       className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2 rounded-full border border-primary/30 bg-background/90 px-4 py-2 text-sm font-medium text-primary shadow-glow backdrop-blur-xl transition-all hover:scale-105 hover:bg-primary/10 hover:border-primary/50"
     >
-      <Hexagon className="size-4" />
+      <Globe2 className="size-4" />
       <span>Powered by Geo-Explorer</span>
     </a>
   );
