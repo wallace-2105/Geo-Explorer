@@ -69,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             aria-label="Geo-Explorer, início"
           >
             <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
-              <Hexagon className="size-5" aria-hidden="true" />
+              <Globe2 className="size-5" aria-hidden="true" />
             </span>
             <span className="min-w-0">
               <span className="block truncate font-display text-base font-semibold leading-none">
