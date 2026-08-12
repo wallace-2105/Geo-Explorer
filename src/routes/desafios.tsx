@@ -299,6 +299,9 @@ function PythonPhaseMode({
   const phase = phases.find((p) => p.phase === currentPhase) ?? phases[0];
   const allDone = completedPhases.size === phases.length;
 
+  if (!phase) return null;
+
+
   function handlePhaseSelect(phaseNum: number) {
     setCurrentPhase(phaseNum);
     const p = phases!.find((ph) => ph.phase === phaseNum);
