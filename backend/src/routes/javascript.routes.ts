@@ -6,11 +6,12 @@ const router = Router();
 
 // GET /api/javascript/phases?level=Iniciante&difficulty=easy
 router.get("/phases", (req, res) => {
-  const level = req.query.level as any;
-  const difficulty = req.query.difficulty as any;
+  const level = req.query["level"] as any;
+  const difficulty = req.query["difficulty"] as any;
 
   if (!level || !difficulty) {
-    return res.status(400).json({ error: "Parâmetros level e difficulty são obrigatórios." });
+    res.status(400).json({ error: "Parâmetros level e difficulty são obrigatórios." });
+    return;
   }
 
   const phases = getJavascriptPhases(level, difficulty);
@@ -26,10 +27,11 @@ router.get("/phases", (req, res) => {
 
 // GET /api/javascript/phases/:id
 router.get("/phases/:id", (req, res) => {
-  const challenge = getJavascriptChallenge(req.params.id);
+  const challenge = getJavascriptChallenge(req.params["id"]);
   
   if (!challenge) {
-    return res.status(404).json({ error: "Desafio não encontrado." });
+    res.status(404).json({ error: "Desafio não encontrado." });
+    return;
   }
 
   const { solution, ...safeChallenge } = challenge;
@@ -39,14 +41,16 @@ router.get("/phases/:id", (req, res) => {
 // POST /api/javascript/phases/:id/submit
 router.post("/phases/:id/submit", async (req, res) => {
   try {
-    const challenge = getJavascriptChallenge(req.params.id);
+    const challenge = getJavascriptChallenge(req.params["id"]);
     if (!challenge) {
-      return res.status(404).json({ error: "Desafio não encontrado." });
+      res.status(404).json({ error: "Desafio não encontrado." });
+      return;
     }
 
     const { code } = req.body;
     if (!code || typeof code !== "string") {
-      return res.status(400).json({ error: "O código submetido é obrigatório." });
+      res.status(400).json({ error: "O código submetido é obrigatório." });
+      return;
     }
 
     const result = await evaluateJavascriptSolution(challenge, code);
