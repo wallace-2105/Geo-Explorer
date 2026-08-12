@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import type { Services } from "../services/container.js";
 import { createPythonRouter } from "./python.routes.js";
+import javascriptRouter from "./javascript.routes.js";
 import {
   certificateInputSchema,
   challengeInputSchema,
@@ -13,6 +14,9 @@ import {
 export function createApiRouter(services: Services) {
   const router = Router();
   router.get("/health", (_request, response) => response.json({ data: { status: "ok" } }));
+
+  // Register JS Router
+  router.use("/javascript", javascriptRouter);
   router.get("/trails", async (request, response) =>
     response.json({ data: await services.trails.list(trailQuerySchema.parse(request.query)) }),
   );

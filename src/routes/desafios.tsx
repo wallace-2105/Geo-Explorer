@@ -57,8 +57,8 @@ export const Route = createFileRoute("/desafios")({
 
 const DIFFICULTIES: Difficulty[] = ["easy", "medium", "hard"];
 
-// ─── Types for Python phases ───────────────────────────────────────────────
-interface PythonTestResult {
+// ─── Types for Language phases ───────────────────────────────────────────────
+interface PhaseTestResult {
   passed: boolean;
   description: string;
   input: string;
@@ -67,16 +67,16 @@ interface PythonTestResult {
   error?: string;
 }
 
-interface PythonEvalResult {
+interface PhaseEvalResult {
   passedTests: number;
   totalTests: number;
   score: number;
   status: "passed" | "failed";
-  results: PythonTestResult[];
+  results: PhaseTestResult[];
   feedback: string;
 }
 
-interface PythonPhase {
+interface PhaseChallenge {
   id: string;
   phase: number;
   level: Level;
@@ -90,35 +90,35 @@ interface PythonPhase {
   example: { input: string; output: string; explanation: string };
 }
 
-// ─── Python Phases Mode ────────────────────────────────────────────────────
-function usePythonPhases(level: Level, difficulty: Difficulty, enabled: boolean) {
+// ─── Language Phases Mode ────────────────────────────────────────────────────
+function useLanguagePhases(technology: Technology, level: Level, difficulty: Difficulty, enabled: boolean) {
   return useQuery({
-    queryKey: ["python-phases", level, difficulty],
+    queryKey: ["lang-phases", technology, level, difficulty],
     queryFn: () =>
-      apiRequest<PythonPhase[]>(`/python/phases?level=${encodeURIComponent(level)}&difficulty=${difficulty}`),
+      apiRequest<PhaseChallenge[]>(`/${technology.toLowerCase()}/phases?level=${encodeURIComponent(level)}&difficulty=${difficulty}`),
     enabled,
     staleTime: 1000 * 60 * 60,
   });
 }
 
-function usePythonSubmit() {
+function useLanguageSubmit(technology: Technology) {
   return useMutation({
     mutationFn: ({ id, code }: { id: string; code: string }) =>
-      apiRequest<PythonEvalResult>(`/python/phases/${id}/submit`, {
+      apiRequest<PhaseEvalResult>(`/${technology.toLowerCase()}/phases/${id}/submit`, {
         method: "POST",
         body: JSON.stringify({ code }),
       }),
   });
 }
 
-// ─── Python Phase Progress Bar ─────────────────────────────────────────────
+// ─── Phase Progress Bar ─────────────────────────────────────────────
 function PhaseProgressBar({
   phases,
   current,
   completed,
   onSelect,
 }: {
-  phases: PythonPhase[];
+  phases: PhaseChallenge[];
   current: number;
   completed: Set<number>;
   onSelect: (phase: number) => void;
@@ -163,8 +163,8 @@ function PhaseProgressBar({
   );
 }
 
-// ─── Python Evaluation Results Panel ──────────────────────────────────────
-function EvaluationResults({ result }: { result: PythonEvalResult }) {
+// ─── Phase Evaluation Results Panel ──────────────────────────────────────
+function EvaluationResults({ result }: { result: PhaseEvalResult }) {
   return (
     <div
       className={cn(
@@ -259,19 +259,21 @@ function EvaluationResults({ result }: { result: PythonEvalResult }) {
   );
 }
 
-// ─── Python Phase Viewer ────────────────────────────────────────────────────
-function PythonPhaseMode({
+// ─── Phase Viewer ────────────────────────────────────────────────────
+function PhaseMode({
+  technology,
   level,
   difficulty,
 }: {
+  technology: Technology;
   level: Level;
   difficulty: Difficulty;
 }) {
-  const { data: phases, isLoading, isError } = usePythonPhases(level, difficulty, true);
-  const submit = usePythonSubmit();
+  const { data: phases, isLoading, isError } = useLanguagePhases(technology, level, difficulty, true);
+  const submit = useLanguageSubmit(technology);
   const [currentPhase, setCurrentPhase] = useState(1);
   const [code, setCode] = useState("");
-  const [evalResult, setEvalResult] = useState<PythonEvalResult | null>(null);
+  const [evalResult, setEvalResult] = useState<PhaseEvalResult | null>(null);
   const [completedPhases, setCompletedPhases] = useState<Set<number>>(new Set());
   const [showHint, setShowHint] = useState(false);
 
@@ -502,7 +504,7 @@ function ChallengesPage() {
   const submit = useSubmitChallenge();
   const challenge = generate.data;
 
-  const isPython = technology === "Python";
+  const isPhaseMode = technology === "Python" || technology === "JavaScript";
 
   function handleGenerate() {
     submit.reset();
@@ -545,8 +547,8 @@ function ChallengesPage() {
         eyebrow="Prática"
         title="Desafios de programação"
         description={
-          isPython
-            ? "Modo Python — complete as 5 fases em sequência. Seu código é executado e avaliado com casos de teste reais."
+          isPhaseMode
+            ? `Modo ${technology} — complete as 5 fases em sequência. Seu código é executado e avaliado com casos de teste reais.`
             : "Escolha tecnologia, nível e dificuldade. O desafio será gerado pelo backend com apoio de IA."
         }
       />
@@ -569,7 +571,7 @@ function ChallengesPage() {
                 {TECHNOLOGIES.map((t) => (
                   <SelectItem key={t} value={t}>
                     {t}
-                    {t === "Python" && (
+                    {(t === "Python" || t === "JavaScript") && (
                       <span className="ml-1.5 rounded bg-primary/15 px-1.5 py-0.5 text-xs text-primary">
                         Fases
                       </span>
@@ -615,9 +617,9 @@ function ChallengesPage() {
             </Select>
           </div>
 
-          {isPython ? (
+          {isPhaseMode ? (
             <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-muted-foreground">
-              🐍 <span className="font-semibold text-primary">Modo Python Fases</span>
+              {technology === "Python" ? "🐍" : "🟨"} <span className="font-semibold text-primary">Modo {technology} Fases</span>
               <br />
               5 desafios progressivos com avaliação real do código. Complete cada fase para desbloquear a próxima.
             </div>
@@ -645,8 +647,8 @@ function ChallengesPage() {
 
         {/* Main content */}
         <section aria-live="polite" aria-busy={generate.isPending} className="space-y-6">
-          {isPython ? (
-            <PythonPhaseMode level={level} difficulty={difficulty} />
+          {isPhaseMode ? (
+            <PhaseMode technology={technology} level={level} difficulty={difficulty} />
           ) : generate.isPending ? (
             <div className="surface-card space-y-4 p-6">
               <Skeleton className="h-6 w-2/3" />
