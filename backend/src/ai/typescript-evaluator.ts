@@ -139,13 +139,13 @@ runTest();
 
 function normalise(s: string): string {
   return s
-    .replace(/\\s+/g, " ")
-    .replace(/\\( /g, "(")
-    .replace(/ \\)/g, ")")
-    .replace(/\\[ /g, "[")
-    .replace(/ \\]/g, "]")
-    .replace(/\\{ /g, "{")
-    .replace(/ \\}/g, "}")
+    .replace(/\s+/g, " ")
+    .replace(/\( /g, "(")
+    .replace(/ \)/g, ")")
+    .replace(/\[ /g, "[")
+    .replace(/ \]/g, "]")
+    .replace(/\{ /g, "{")
+    .replace(/ \}/g, "}")
     .replace(/"/g, "'") 
     .trim();
 }
@@ -166,7 +166,7 @@ export async function evaluateTypescriptSolution(
   // Since tsc is slow, let's try to just run it one by one for now (or fail early on compile).
   
   for (let i = 0; i < challenge.testCases.length; i++) {
-    const tc = challenge.testCases[i];
+    const tc = challenge.testCases[i]!;
     const { output, error } = await runTypescriptTest(userCode, tc, tscCmd);
 
     // If it's a compilation error, it applies to all tests, so we can fail everything.
@@ -217,7 +217,7 @@ function buildResult(results: TestResult[], expectedTotal: number): TypescriptEv
   const status = score >= 70 ? "passed" : "failed";
 
   let feedback: string;
-  if (results.length === 1 && !results[0].passed && results[0].error?.includes("Compilation Error")) {
+  if (results.length === 1 && !results[0]!.passed && results[0]!.error?.includes("Compilation Error")) {
       feedback = "Erro de compilação! Seu código não passou na checagem estrita de tipos do TypeScript.";
   } else if (score === 100) {
     feedback = `Parabéns! Todos os ${totalTests} casos de teste passaram. Solução tipada perfeitamente!`;

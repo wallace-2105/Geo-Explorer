@@ -1,4 +1,5 @@
-import type { Level, Difficulty } from "../../../src/types/index.js";
+type Level = "Iniciante" | "Intermediário" | "Avançado";
+type Difficulty = "easy" | "medium" | "hard";
 
 export interface TestCase {
   input: string;
