@@ -1,5 +1,9 @@
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
+import { writeFile, unlink } from "node:fs/promises";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { randomUUID } from "node:crypto";
 import type { PythonChallenge, TestCase } from "../data/python-challenges.js";
 
 const execAsync = promisify(exec);
@@ -23,18 +27,26 @@ export interface PythonEvaluationResult {
   feedback: string;
 }
 
-/** Wraps user code + test harness and runs it with Python. */
+/** Detects the Python executable available on the system */
+async function getPythonExe(): Promise<string | null> {
+  for (const exe of ["python", "python3"]) {
+    try {
+      await execAsync(`${exe} --version`, { timeout: 3000 });
+      return exe;
+    } catch {
+      // try next
+    }
+  }
+  return null;
+}
+
+/** Writes a temp Python file, runs it, then deletes it */
 async function runPythonTest(
   userCode: string,
   testCase: TestCase,
+  pythonExe: string,
 ): Promise<{ output: string; error: string }> {
-  // We build a small harness that:
-  //  1. Defines the user's resolver function
-  //  2. Evaluates the input expression
-  //  3. Calls resolver(*args) and prints repr(result)
-  const harness = `
-import sys
-import json
+  const harness = `import sys
 
 ${userCode}
 
@@ -46,34 +58,45 @@ try:
         result = resolver(args_raw)
     print(repr(result))
 except Exception as e:
-    print(f"ERRO: {e}", file=sys.stderr)
+    print(str(e), file=sys.stderr)
     sys.exit(1)
-`.trim();
+`;
+
+  const tmpFile = join(tmpdir(), `geo_py_${randomUUID()}.py`);
 
   try {
-    // Escape single quotes in harness for safe shell passing
-    const escaped = harness.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-    const cmd = `python -c "${escaped}"`;
+    await writeFile(tmpFile, harness, "utf-8");
 
-    const { stdout, stderr } = await execAsync(cmd, {
+    const { stdout, stderr } = await execAsync(`${pythonExe} "${tmpFile}"`, {
       timeout: TIMEOUT_MS,
       windowsHide: true,
     });
 
     return { output: stdout.trim(), error: stderr.trim() };
   } catch (err: unknown) {
-    const error = err as NodeJS.ErrnoException & { stdout?: string; stderr?: string; killed?: boolean };
+    const error = err as NodeJS.ErrnoException & {
+      stdout?: string;
+      stderr?: string;
+      killed?: boolean;
+    };
     if (error.killed) {
-      return { output: "", error: "Timeout: o código demorou mais de 5 segundos." };
+      return {
+        output: "",
+        error: "Timeout: o código demorou mais de 5 segundos.",
+      };
     }
     return {
       output: error.stdout?.trim() ?? "",
       error: error.stderr?.trim() ?? String(err),
     };
+  } finally {
+    await unlink(tmpFile).catch(() => {
+      // ignore cleanup errors
+    });
   }
 }
 
-/** Normalise Python repr for comparison: strip extra spaces */
+/** Normalise Python repr for comparison */
 function normalise(s: string): string {
   return s
     .replace(/\s+/g, " ")
@@ -90,22 +113,16 @@ export async function evaluatePythonSolution(
   challenge: PythonChallenge,
   userCode: string,
 ): Promise<PythonEvaluationResult> {
-  const results: TestResult[] = [];
+  const pythonExe = await getPythonExe();
 
-  // Check python availability first
-  try {
-    await execAsync("python --version", { timeout: 3000 });
-  } catch {
-    // python3 fallback
-    try {
-      await execAsync("python3 --version", { timeout: 3000 });
-    } catch {
-      return buildFallbackResult(challenge.testCases, userCode);
-    }
+  if (!pythonExe) {
+    return buildFallbackResult(challenge.testCases, userCode);
   }
 
+  const results: TestResult[] = [];
+
   for (const tc of challenge.testCases) {
-    const { output, error } = await runPythonTest(userCode, tc);
+    const { output, error } = await runPythonTest(userCode, tc, pythonExe);
 
     if (error) {
       results.push({
@@ -114,7 +131,7 @@ export async function evaluatePythonSolution(
         input: tc.input,
         expected: tc.expected,
         received: "",
-        error: error.substring(0, 200),
+        error: error.substring(0, 300),
       });
       continue;
     }
@@ -157,7 +174,7 @@ function buildFallbackResult(
   testCases: TestCase[],
   code: string,
 ): PythonEvaluationResult {
-  const hasLogic = code.trim().length > 60 && !code.includes("pass");
+  const hasLogic = code.trim().length > 60 && !code.includes("    pass");
   const score = hasLogic ? 80 : 20;
   const status = hasLogic ? "passed" : "failed";
   const results: TestResult[] = testCases.map((tc) => ({
@@ -165,7 +182,8 @@ function buildFallbackResult(
     description: tc.description,
     input: tc.input,
     expected: tc.expected,
-    received: "(Python não disponível no servidor — avaliação heurística)",
+    received:
+      "(Python não disponível no servidor — avaliação heurística)",
   }));
 
   return {
