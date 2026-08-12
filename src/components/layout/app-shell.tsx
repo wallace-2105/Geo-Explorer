@@ -42,7 +42,7 @@ function GeoBadge() {
       rel="noreferrer"
       className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2 rounded-full border border-primary/30 bg-background/90 px-4 py-2 text-sm font-medium text-primary shadow-glow backdrop-blur-xl transition-all hover:scale-105 hover:bg-primary/10 hover:border-primary/50"
     >
-      <Compass className="size-4" />
+      <img src="/favicon.png" alt="" className="size-4 object-contain" />
       <span>Powered by Geo-Explorer</span>
     </a>
   );
@@ -68,8 +68,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             className="flex min-w-0 items-center gap-2.5"
             aria-label="Geo-Explorer, início"
           >
-            <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
-              <Compass className="size-5" aria-hidden="true" />
+            <span className="grid size-9 shrink-0 place-items-center overflow-hidden rounded-xl bg-primary/15 ring-1 ring-primary/30">
+              <img src="/favicon.png" alt="Geo-Explorer Logo" className="size-full object-cover" />
             </span>
             <span className="min-w-0">
               <span className="block truncate font-display text-base font-semibold leading-none">
