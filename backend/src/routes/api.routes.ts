@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { z } from "zod";
 import type { Services } from "../services/container.js";
+import { createPythonRouter } from "./python.routes.js";
 import {
   certificateInputSchema,
   challengeInputSchema,
@@ -71,5 +72,6 @@ export function createApiRouter(services: Services) {
   router.get("/users/:id", async (request, response) =>
     response.json({ data: await services.users.get(idSchema.parse(request.params).id) }),
   );
+  router.use("/python", createPythonRouter());
   return router;
 }
