@@ -311,13 +311,13 @@ function PythonPhaseMode({
   }
 
   function handleSubmit() {
-    if (!code.trim() || code.trim() === phase.starterCode.trim()) {
+    if (!code.trim() || code.trim() === phase!.starterCode.trim()) {
       toast.warning("Implemente sua solução antes de enviar.");
       return;
     }
 
     submit.mutate(
-      { id: phase.id, code },
+      { id: phase!.id, code },
       {
         onSuccess: (result) => {
           setEvalResult(result);
