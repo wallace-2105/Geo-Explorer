@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { Services } from "../services/container.js";
 import { createPythonRouter } from "./python.routes.js";
 import javascriptRouter from "./javascript.routes.js";
+import typescriptRouter from "./typescript.routes.js";
 import {
   certificateInputSchema,
   challengeInputSchema,
@@ -17,6 +18,7 @@ export function createApiRouter(services: Services) {
 
   // Register JS Router
   router.use("/javascript", javascriptRouter);
+  router.use("/typescript", typescriptRouter);
   router.get("/trails", async (request, response) =>
     response.json({ data: await services.trails.list(trailQuerySchema.parse(request.query)) }),
   );
