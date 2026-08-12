@@ -504,7 +504,7 @@ function ChallengesPage() {
   const submit = useSubmitChallenge();
   const challenge = generate.data;
 
-  const isPhaseMode = technology === "Python" || technology === "JavaScript";
+  const isPhaseMode = technology === "Python" || technology === "JavaScript" || technology === "TypeScript";
 
   function handleGenerate() {
     submit.reset();
@@ -571,7 +571,7 @@ function ChallengesPage() {
                 {TECHNOLOGIES.map((t) => (
                   <SelectItem key={t} value={t}>
                     {t}
-                    {(t === "Python" || t === "JavaScript") && (
+                    {(t === "Python" || t === "JavaScript" || t === "TypeScript") && (
                       <span className="ml-1.5 rounded bg-primary/15 px-1.5 py-0.5 text-xs text-primary">
                         Fases
                       </span>
@@ -619,9 +619,9 @@ function ChallengesPage() {
 
           {isPhaseMode ? (
             <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-muted-foreground">
-              {technology === "Python" ? "🐍" : "🟨"} <span className="font-semibold text-primary">Modo {technology} Fases</span>
+              {technology === "Python" ? "🐍" : technology === "JavaScript" ? "🟨" : "📘"} <span className="font-semibold text-primary">Modo {technology} Fases</span>
               <br />
-              5 desafios progressivos com avaliação real do código. Complete cada fase para desbloquear a próxima.
+              5 desafios progressivos com avaliação real do código. No TS, seu código passará por verificação estrita de compilação! Complete cada fase para desbloquear a próxima.
             </div>
           ) : (
             <>

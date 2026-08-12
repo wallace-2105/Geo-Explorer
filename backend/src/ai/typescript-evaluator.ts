@@ -45,12 +45,12 @@ async function runTypescriptTest(
   // Typescript tests: We append the test execution at the end of the user's TS code.
   // We use ts-ignore or disable some lints if necessary, but ideally the user code itself should be strict.
   
-  const harness = \`
-\${userCode}
+  const harness = `
+${userCode}
 
 async function runTest() {
   try {
-    let args_raw = [\${testCase.input}];
+    let args_raw = [${testCase.input}];
     // Type casting to bypass TS complaining about args array expansion if types are very complex
     let result = (module.exports as any)[Object.keys(module.exports)[0]](...args_raw);
     
@@ -86,11 +86,11 @@ async function runTest() {
 }
 
 runTest();
-\`;
+`;
 
   const uuid = randomUUID();
-  const tsFile = join(tmpdir(), \`geo_ts_\${uuid}.ts\`);
-  const jsFile = join(tmpdir(), \`geo_ts_\${uuid}.js\`); // tsc emits .js with the same name
+  const tsFile = join(tmpdir(), `geo_ts_${uuid}.ts`);
+  const jsFile = join(tmpdir(), `geo_ts_${uuid}.js`); // tsc emits .js with the same name
 
   try {
     await writeFile(tsFile, harness, "utf-8");
@@ -98,7 +98,7 @@ runTest();
     // 1. Compile TS -> JS (This checks for types!)
     // We run tsc in the same folder to compile it
     try {
-      await execAsync(\`\${tscCmd} --target es2022 --module commonjs "\${tsFile}"\`, {
+      await execAsync(`${tscCmd} --target es2022 --module commonjs "${tsFile}"`, {
         timeout: TIMEOUT_MS,
         windowsHide: true,
       });
@@ -108,7 +108,7 @@ runTest();
     }
 
     // 2. Run the compiled JS
-    const { stdout, stderr } = await execAsync(\`node "\${jsFile}"\`, {
+    const { stdout, stderr } = await execAsync(`node "${jsFile}"`, {
       timeout: TIMEOUT_MS,
       windowsHide: true,
     });
@@ -220,13 +220,13 @@ function buildResult(results: TestResult[], expectedTotal: number): TypescriptEv
   if (results.length === 1 && !results[0].passed && results[0].error?.includes("Compilation Error")) {
       feedback = "Erro de compilação! Seu código não passou na checagem estrita de tipos do TypeScript.";
   } else if (score === 100) {
-    feedback = \`Parabéns! Todos os \${totalTests} casos de teste passaram. Solução tipada perfeitamente!\`;
+    feedback = `Parabéns! Todos os ${totalTests} casos de teste passaram. Solução tipada perfeitamente!`;
   } else if (score >= 70) {
-    feedback = \`Aprovado! \${passedTests} de \${totalTests} testes passaram (\${score}%).\`;
+    feedback = `Aprovado! ${passedTests} de ${totalTests} testes passaram (${score}%).`;
   } else if (score > 0) {
-    feedback = \`\${passedTests} de \${totalTests} testes passaram (\${score}%). Tente novamente.\`;
+    feedback = `${passedTests} de ${totalTests} testes passaram (${score}%). Tente novamente.`;
   } else {
-    feedback = \`Nenhum teste passou. Revise sua tipagem e lógica.\`;
+    feedback = `Nenhum teste passou. Revise sua tipagem e lógica.`;
   }
 
   return { passedTests, totalTests, score, status, results, feedback };
