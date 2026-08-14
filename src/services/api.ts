@@ -1,17 +1,20 @@
 /**
  * Camada HTTP base.
  *
- * Todas as chamadas de rede passam por aqui. Enquanto o backend
- * (Node.js + TypeScript) não existe, `USE_MOCKS` mantém a aplicação
- * funcional com os dados de `src/data`. Basta definir
- * `VITE_API_URL` e `VITE_USE_MOCKS=false` para consumir a API real.
+ * Todas as chamadas de rede passam por aqui.
+ * - Se `VITE_API_URL` estiver definida, usa a API real automaticamente.
+ * - Defina `VITE_USE_MOCKS=true` explicitamente para forçar mocks localmente.
  */
 
 export const API_BASE_URL: string =
   (import.meta.env["VITE_API_URL"] as string | undefined) ?? "/api";
 
-export const USE_MOCKS: boolean =
-  (import.meta.env["VITE_USE_MOCKS"] as string | undefined) !== "false";
+// USE_MOCKS só ativa se explicitamente setado como "true".
+// Se VITE_API_URL estiver definida, sempre usa API real (ignorando VITE_USE_MOCKS).
+const hasApiUrl = !!(import.meta.env["VITE_API_URL"] as string | undefined);
+export const USE_MOCKS: boolean = hasApiUrl
+  ? false
+  : (import.meta.env["VITE_USE_MOCKS"] as string | undefined) === "true";
 
 export class ApiError extends Error {
   status: number;
