@@ -6,8 +6,12 @@
  * - Defina `VITE_USE_MOCKS=true` explicitamente para forçar mocks localmente.
  */
 
-export const API_BASE_URL: string =
-  (import.meta.env["VITE_API_URL"] as string | undefined) ?? "/api";
+let baseUrl = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "/api";
+if (baseUrl.endsWith("/")) baseUrl = baseUrl.slice(0, -1);
+if (baseUrl.startsWith("http") && !baseUrl.endsWith("/api")) {
+  baseUrl += "/api";
+}
+export const API_BASE_URL: string = baseUrl;
 
 // USE_MOCKS só ativa se explicitamente setado como "true".
 // Se VITE_API_URL estiver definida, sempre usa API real (ignorando VITE_USE_MOCKS).
