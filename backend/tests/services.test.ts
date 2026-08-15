@@ -43,7 +43,7 @@ describe("Geo-Explorer services", () => {
     });
     const certificate = await services.certificates.generate({
       trailId: trail.id,
-      userName: "Lucas Andrade",
+      userName: "Dev",
     });
     expect((await services.certificates.get(certificate.id)).credentialId).toMatch(/^GEO-/);
   });
