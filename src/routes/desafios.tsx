@@ -16,6 +16,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { DifficultyBadge, LevelBadge, TechBadge } from "@/components/shared/badges";
 import { PageHeader } from "@/components/shared/page-header";
+import { ProtectedRoute } from "@/components/shared/protected-route";
 import { EmptyState, ErrorState } from "@/components/shared/states";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -542,16 +543,17 @@ function ChallengesPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 sm:py-12">
-      <PageHeader
-        eyebrow="Prática"
-        title="Desafios de programação"
-        description={
-          isPhaseMode
-            ? `Modo ${technology} — complete as 5 fases em sequência. Seu código é executado e avaliado com casos de teste reais.`
-            : "Escolha tecnologia, nível e dificuldade. O desafio será gerado pelo backend com apoio de IA."
-        }
-      />
+    <ProtectedRoute>
+      <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 sm:py-12">
+        <PageHeader
+          eyebrow="Prática"
+          title="Desafios de programação"
+          description={
+            isPhaseMode
+              ? `Modo ${technology} — complete as 5 fases em sequência. Seu código é executado e avaliado com casos de teste reais.`
+              : "Escolha tecnologia, nível e dificuldade. O desafio será gerado pelo backend com apoio de IA."
+          }
+        />
 
       <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
         {/* Sidebar */}
@@ -797,6 +799,6 @@ function ChallengesPage() {
           )}
         </section>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }

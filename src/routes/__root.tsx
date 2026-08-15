@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { AppShell } from "../components/layout/app-shell";
 import { Toaster } from "../components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AuthProvider } from "../contexts/auth-context";
 
 function NotFoundComponent() {
   return (
@@ -134,12 +135,14 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <AppShell>
-        <Outlet />
-      </AppShell>
-      <Toaster position="top-right" />
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <AppShell>
+          <Outlet />
+        </AppShell>
+        <Toaster position="top-right" />
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }

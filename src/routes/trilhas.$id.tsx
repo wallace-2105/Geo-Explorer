@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { LevelBadge, ProgressBlock, StatusBadge, TechBadge } from "@/components/shared/badges";
+import { ProtectedRoute } from "@/components/shared/protected-route";
 import { ErrorState } from "@/components/shared/states";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -102,13 +103,14 @@ function TrailDetailPage() {
   const totalLessons = trail.modules.reduce((acc, m) => acc + m.lessons.length, 0);
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
-      <Button asChild variant="ghost" size="sm" className="-ml-2 w-fit">
-        <Link to="/trilhas">
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          Trilhas
-        </Link>
-      </Button>
+    <ProtectedRoute>
+      <div className="mx-auto w-full max-w-5xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
+        <Button asChild variant="ghost" size="sm" className="-ml-2 w-fit">
+          <Link to="/trilhas">
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            Trilhas
+          </Link>
+        </Button>
 
       <header className="hero-surface relative overflow-hidden rounded-2xl border border-border p-6 sm:p-8">
         <div
@@ -251,6 +253,7 @@ function TrailDetailPage() {
           ))}
         </ul>
       </section>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }

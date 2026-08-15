@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/components/shared/page-header";
+import { ProtectedRoute } from "@/components/shared/protected-route";
 import { CardSkeletonGrid, EmptyState, ErrorState } from "@/components/shared/states";
 import { TrailCard } from "@/components/trails/trail-card";
 import { Button } from "@/components/ui/button";
@@ -61,12 +62,13 @@ function TrailsPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 sm:py-12">
-      <PageHeader
-        eyebrow="Catálogo"
-        title="Explorar trilhas"
-        description="Escolha uma tecnologia e um nível para encontrar a trilha certa para o seu momento."
-      />
+    <ProtectedRoute>
+      <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6 sm:py-12">
+        <PageHeader
+          eyebrow="Catálogo"
+          title="Explorar trilhas"
+          description="Escolha uma tecnologia e um nível para encontrar a trilha certa para o seu momento."
+        />
 
       <section className="surface-card space-y-4 p-4 sm:p-5" aria-label="Filtros de trilhas">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -184,6 +186,7 @@ function TrailsPage() {
           </>
         )}
       </section>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }

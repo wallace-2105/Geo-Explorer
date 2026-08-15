@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award, Flame, ListChecks, Target, TrendingUp } from "lucide-react";
 import { CertificateCardMini } from "@/components/certificates/certificate-card-mini";
 import { ProgressBlock, StatCard, TechBadge } from "@/components/shared/badges";
+import { ProtectedRoute } from "@/components/shared/protected-route";
 import { PageHeader, SectionHeading } from "@/components/shared/page-header";
 import { EmptyState, ErrorState, StatSkeletonRow } from "@/components/shared/states";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -46,8 +47,9 @@ function ProfilePage() {
   const completedTrails = (trails.data ?? []).filter((t) => t.status === "completed");
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
-      <PageHeader eyebrow="Conta" title="Meu perfil" />
+    <ProtectedRoute>
+      <div className="mx-auto w-full max-w-6xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
+        <PageHeader eyebrow="Conta" title="Meu perfil" />
 
       <section className="surface-card p-6" aria-label="Identificação">
         {profile.isPending ? (
@@ -187,6 +189,6 @@ function ProfilePage() {
           )}
         </section>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }

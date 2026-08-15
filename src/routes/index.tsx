@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award, ArrowRight, Flame, ListChecks, Sparkles, Target, TrendingUp } from "lucide-react";
-import { CertificateCardMini } from "@/components/certificates/certificate-card-mini";
+import { CertificateCardMini } from "@/components/features/certificates/certificate-card-mini";
+import { ProtectedRoute } from "@/components/shared/protected-route";
 import { PageHeader, SectionHeading } from "@/components/shared/page-header";
 import { StatCard, DifficultyBadge, TechBadge } from "@/components/shared/badges";
 import {
@@ -49,25 +50,26 @@ function DashboardPage() {
   const available = (trails.data ?? []).filter((t) => t.status !== "completed").slice(0, 3);
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-12 px-4 py-8 sm:px-6 sm:py-12">
-      <section className="hero-surface relative overflow-hidden rounded-2xl border border-border p-6 sm:p-10">
-        <div
-          className="grid-backdrop pointer-events-none absolute inset-0 opacity-70"
-          aria-hidden="true"
-        />
-        <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-          <div className="min-w-0 space-y-3">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">
-              Plataforma de trilhas
-            </p>
-            <h1 className="text-3xl font-semibold sm:text-4xl">
-              {greeting()}, {profile.data ? firstName(profile.data.name) : "dev"}.
-            </h1>
-            <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
-              Continue de onde parou, resolva um desafio novo e some mais um certificado à sua
-              jornada.
-            </p>
-          </div>
+    <ProtectedRoute>
+      <div className="mx-auto w-full max-w-7xl space-y-12 px-4 py-8 sm:px-6 sm:py-12">
+        <section className="hero-surface relative overflow-hidden rounded-2xl border border-border p-6 sm:p-10">
+          <div
+            className="grid-backdrop pointer-events-none absolute inset-0 opacity-70"
+            aria-hidden="true"
+          />
+          <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+            <div className="min-w-0 space-y-3">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">
+                Plataforma de trilhas
+              </p>
+              <h1 className="text-3xl font-semibold sm:text-4xl">
+                {greeting()}, {profile.data ? firstName(profile.data.name) : "Dev"}.
+              </h1>
+              <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
+                Continue de onde parou, resolva um desafio novo e some mais um certificado à sua
+                jornada.
+              </p>
+            </div>
           <div className="flex flex-wrap gap-2">
             <Button asChild>
               <Link to="/trilhas">
@@ -269,6 +271,6 @@ function DashboardPage() {
           )}
         </section>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }
