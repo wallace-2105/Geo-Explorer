@@ -1,5 +1,5 @@
 <div align="center">
-  # 🚀 Geo-Explorer
+   🚀 Geo-Explorer
   
   **Plataforma Full-Stack de Trilhas de Aprendizagem e Desafios para Desenvolvedores**
   
