@@ -3,7 +3,7 @@ import type { Certificate } from "@/types";
 export const mockCertificates: Certificate[] = [
   {
     id: "cert-react-avancado",
-    userName: "Lucas Andrade",
+    userName: "Dev",
     trailId: "react-avancado",
     trailName: "React avançado e performance",
     technology: "React",
@@ -14,7 +14,7 @@ export const mockCertificates: Certificate[] = [
   },
   {
     id: "cert-js-moderno",
-    userName: "Lucas Andrade",
+    userName: "Dev",
     trailId: "js-moderno",
     trailName: "JavaScript moderno na prática",
     technology: "JavaScript",
@@ -25,7 +25,7 @@ export const mockCertificates: Certificate[] = [
   },
   {
     id: "cert-py-dados",
-    userName: "Lucas Andrade",
+    userName: "Dev",
     trailId: "python-dados",
     trailName: "Python para dados e automação",
     technology: "Python",

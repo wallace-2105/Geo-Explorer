@@ -8,9 +8,9 @@ import { TrailService } from "./trail.service.js";
 import { AppError } from "../errors/app-error.js";
 const baseUser = {
   id: "usr-1",
-  name: "Lucas Andrade",
-  headline: "Desenvolvedor full-stack · focado em Node.js e TypeScript",
-  email: "lucas.andrade@geoexplorer.dev",
+  name: "Dev",
+  headline: "Desenvolvedor full-stack",
+  email: "dev@geoexplorer.dev",
   memberSince: "2025-11-04T00:00:00Z",
   technologies: ["TypeScript", "Node.js", "React", "JavaScript", "Python"],
 } as const;
