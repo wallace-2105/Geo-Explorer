@@ -4,13 +4,13 @@ import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/auth-context";
 
 const NAV = [
   { to: "/", label: "Dashboard" },
   { to: "/trilhas", label: "Trilhas" },
   { to: "/desafios", label: "Desafios" },
   { to: "/certificados", label: "Certificados" },
-  { to: "/perfil", label: "Perfil" },
 ] as const;
 
 function NavLinks({ onNavigate, vertical }: { onNavigate?: () => void; vertical?: boolean }) {
@@ -30,6 +30,13 @@ function NavLinks({ onNavigate, vertical }: { onNavigate?: () => void; vertical?
           {item.label}
         </Link>
       ))}
+      <Link
+        to="/perfil"
+        onClick={onNavigate}
+        className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
+      >
+        Perfil
+      </Link>
     </nav>
   );
 }
@@ -51,6 +58,7 @@ function GeoBadge() {
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { user, signOut } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -82,10 +90,17 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <NavLinks />
-            <Button asChild size="sm">
-              <Link to="/desafios">Gerar desafio</Link>
-            </Button>
+            {user ? (
+              <>
+                <NavLinks />
+                <Button variant="ghost" size="sm" onClick={() => signOut()}>
+                  Sair
+                </Button>
+                <Button asChild size="sm">
+                  <Link to="/desafios">Gerar desafio</Link>
+                </Button>
+              </>
+            ) : null}
           </div>
 
           <Sheet open={open} onOpenChange={setOpen}>
@@ -102,7 +117,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             <SheetContent side="right" className="w-72 bg-surface">
               <SheetTitle className="px-1 font-display">Navegação</SheetTitle>
               <div className="mt-4 px-1">
-                <NavLinks vertical onNavigate={() => setOpen(false)} />
+                {user ? (
+                  <>
+                    <NavLinks vertical onNavigate={() => setOpen(false)} />
+                    <Button variant="ghost" className="mt-4 w-full justify-start text-destructive" onClick={() => signOut()}>
+                      Sair da conta
+                    </Button>
+                  </>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Faça login para acessar o menu.</p>
+                )}
               </div>
             </SheetContent>
           </Sheet>
