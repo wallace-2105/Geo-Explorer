@@ -25,7 +25,8 @@ export function createApp(services: Services = createServices()) {
         if (hasMatch) {
           callback(null, true);
         } else {
-          callback(new Error("Not allowed by CORS"));
+          // Passamos false em vez de new Error() para evitar que o Express trate como erro 500
+          callback(null, false);
         }
       },
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

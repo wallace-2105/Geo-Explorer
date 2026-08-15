@@ -3,7 +3,7 @@ import { z } from "zod";
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(3334),
-  CORS_ORIGIN: z.string().default("http://localhost:3000"),
+  CORS_ORIGIN: z.string().default("*"),
   AI_PROVIDER: z.enum(["mock", "openai-compatible"]).default("mock"),
   AI_API_KEY: z.string().optional(),
   AI_MODEL: z.string().default("gpt-4.1-mini"),
