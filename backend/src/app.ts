@@ -12,23 +12,9 @@ export function createApp(services: Services = createServices()) {
   const app = express();
   app.disable("x-powered-by");
   app.use(helmet());
-  const allowedOrigins = env.CORS_ORIGIN.split(",").map((o) => o.trim().replace(/\/$/, ""));
   app.use(
     cors({
-      origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes("*")) {
-          return callback(null, true);
-        }
-        const hasMatch = allowedOrigins.some(
-          (allowed) => allowed.toLowerCase() === origin.toLowerCase()
-        );
-        if (hasMatch) {
-          callback(null, true);
-        } else {
-          // Passamos false em vez de new Error() para evitar que o Express trate como erro 500
-          callback(null, false);
-        }
-      },
+      origin: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       credentials: true,
     }),
