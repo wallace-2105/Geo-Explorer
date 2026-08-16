@@ -6,6 +6,8 @@
  * - Defina `VITE_USE_MOCKS=true` explicitamente para forçar mocks localmente.
  */
 
+import { supabase } from "../lib/supabase";
+
 let baseUrl = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "/api";
 if (baseUrl.endsWith("/")) baseUrl = baseUrl.slice(0, -1);
 if (baseUrl.startsWith("http") && !baseUrl.endsWith("/api")) {
@@ -40,10 +42,14 @@ export async function apiRequest<T>(
   let response: Response;
 
   try {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    
     response = await fetch(`${API_BASE_URL}${path}`, {
       ...init,
       headers: {
         "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...(headers ?? {}),
       },
       ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
