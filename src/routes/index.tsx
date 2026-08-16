@@ -70,207 +70,207 @@ function DashboardPage() {
                 jornada.
               </p>
             </div>
-          <div className="flex flex-wrap gap-2">
-            <Button asChild>
-              <Link to="/trilhas">
-                Explorar trilhas
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/desafios">
-                <Sparkles className="size-4" aria-hidden="true" />
-                Gerar desafio
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="estatisticas">
-        <h2 id="estatisticas" className="sr-only">
-          Estatísticas
-        </h2>
-        {profile.isPending ? (
-          <StatSkeletonRow />
-        ) : profile.isError ? (
-          <ErrorState onRetry={() => void profile.refetch()} />
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <StatCard
-              icon={ListChecks}
-              label="Trilhas concluídas"
-              value={profile.data.stats.completedTrails}
-              hint={`${profile.data.stats.hoursStudied}h de estudo`}
-            />
-            <StatCard
-              icon={Target}
-              label="Desafios realizados"
-              value={profile.data.stats.challengesSolved}
-              hint="Última semana: 4"
-            />
-            <StatCard
-              icon={TrendingUp}
-              label="Progresso atual"
-              value={`${profile.data.stats.currentProgress}%`}
-              hint="Média entre trilhas ativas"
-            />
-            <StatCard
-              icon={Flame}
-              label="Sequência"
-              value={`${profile.data.stats.streakDays} dias`}
-              hint="Continue hoje para manter"
-            />
-          </div>
-        )}
-      </section>
-
-      <section aria-labelledby="andamento">
-        <SectionHeading
-          icon={TrendingUp}
-          title="Trilhas em andamento"
-          description="Retome o próximo módulo"
-          action={
-            <Button asChild variant="ghost" size="sm">
-              <Link to="/trilhas">Ver todas</Link>
-            </Button>
-          }
-        />
-        <h2 id="andamento" className="sr-only">
-          Trilhas em andamento
-        </h2>
-        {trails.isPending ? (
-          <CardSkeletonGrid count={2} />
-        ) : trails.isError ? (
-          <ErrorState onRetry={() => void trails.refetch()} />
-        ) : inProgress.length === 0 ? (
-          <EmptyState
-            title="Nenhuma trilha em andamento"
-            description="Escolha uma trilha para começar sua jornada."
-            action={
-              <Button asChild size="sm">
-                <Link to="/trilhas">Explorar trilhas</Link>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild>
+                <Link to="/trilhas">
+                  Explorar trilhas
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Link>
               </Button>
-            }
-          />
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {inProgress.map((trail) => (
-              <TrailCard key={trail.id} trail={trail} />
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section aria-labelledby="disponiveis">
-        <SectionHeading
-          icon={ListChecks}
-          title="Trilhas disponíveis"
-          description="Sugestões para você"
-        />
-        <h2 id="disponiveis" className="sr-only">
-          Trilhas disponíveis
-        </h2>
-        {trails.isPending ? (
-          <CardSkeletonGrid />
-        ) : trails.isError ? (
-          <ErrorState onRetry={() => void trails.refetch()} />
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {available.map((trail) => (
-              <TrailCard key={trail.id} trail={trail} />
-            ))}
-          </div>
-        )}
-      </section>
-
-      <div className="grid gap-10 lg:grid-cols-2">
-        <section aria-labelledby="desafios-recentes">
-          <SectionHeading
-            icon={Target}
-            title="Desafios recentes"
-            action={
-              <Button asChild variant="ghost" size="sm">
-                <Link to="/desafios">Novo desafio</Link>
+              <Button asChild variant="outline">
+                <Link to="/desafios">
+                  <Sparkles className="size-4" aria-hidden="true" />
+                  Gerar desafio
+                </Link>
               </Button>
-            }
-          />
-          <h2 id="desafios-recentes" className="sr-only">
-            Desafios recentes
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="estatisticas">
+          <h2 id="estatisticas" className="sr-only">
+            Estatísticas
           </h2>
-          {history.isPending ? (
-            <div className="surface-card h-56 animate-pulse" aria-busy="true" />
-          ) : history.isError ? (
-            <ErrorState onRetry={() => void history.refetch()} />
-          ) : history.data.length === 0 ? (
-            <EmptyState title="Nenhum desafio ainda" description="Gere seu primeiro desafio." />
+          {profile.isPending ? (
+            <StatSkeletonRow />
+          ) : profile.isError ? (
+            <ErrorState onRetry={() => void profile.refetch()} />
           ) : (
-            <ul className="surface-card divide-y divide-border">
-              {history.data.map((item) => (
-                <li
-                  key={item.id}
-                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4"
-                >
-                  <div className="min-w-0 space-y-1.5">
-                    <p className="truncate text-sm font-medium">{item.challengeTitle}</p>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <TechBadge technology={item.technology} />
-                      <DifficultyBadge difficulty={item.difficulty} />
-                    </div>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p
-                      className={
-                        item.status === "passed"
-                          ? "text-sm font-medium text-success"
-                          : "text-sm font-medium text-destructive"
-                      }
-                    >
-                      {item.status === "passed" ? "Aprovado" : "Reprovado"}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {formatShortDate(item.solvedAt)}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <StatCard
+                icon={ListChecks}
+                label="Trilhas concluídas"
+                value={profile.data.stats.completedTrails}
+                hint={`${profile.data.stats.hoursStudied}h de estudo`}
+              />
+              <StatCard
+                icon={Target}
+                label="Desafios realizados"
+                value={profile.data.stats.challengesSolved}
+                hint="Última semana: 4"
+              />
+              <StatCard
+                icon={TrendingUp}
+                label="Progresso atual"
+                value={`${profile.data.stats.currentProgress}%`}
+                hint="Média entre trilhas ativas"
+              />
+              <StatCard
+                icon={Flame}
+                label="Sequência"
+                value={`${profile.data.stats.streakDays} dias`}
+                hint="Continue hoje para manter"
+              />
+            </div>
           )}
         </section>
 
-        <section aria-labelledby="certificados-recentes">
+        <section aria-labelledby="andamento">
           <SectionHeading
-            icon={Award}
-            title="Certificados conquistados"
+            icon={TrendingUp}
+            title="Trilhas em andamento"
+            description="Retome o próximo módulo"
             action={
               <Button asChild variant="ghost" size="sm">
-                <Link to="/certificados" search={{ id: undefined }}>
-                  Ver todos
-                </Link>
+                <Link to="/trilhas">Ver todas</Link>
               </Button>
             }
           />
-          <h2 id="certificados-recentes" className="sr-only">
-            Certificados conquistados
+          <h2 id="andamento" className="sr-only">
+            Trilhas em andamento
           </h2>
-          {certificates.isPending ? (
-            <div className="surface-card h-56 animate-pulse" aria-busy="true" />
-          ) : certificates.isError ? (
-            <ErrorState onRetry={() => void certificates.refetch()} />
-          ) : certificates.data.length === 0 ? (
+          {trails.isPending ? (
+            <CardSkeletonGrid count={2} />
+          ) : trails.isError ? (
+            <ErrorState onRetry={() => void trails.refetch()} />
+          ) : inProgress.length === 0 ? (
             <EmptyState
-              title="Nenhum certificado"
-              description="Conclua uma trilha para emitir o primeiro."
+              title="Nenhuma trilha em andamento"
+              description="Escolha uma trilha para começar sua jornada."
+              action={
+                <Button asChild size="sm">
+                  <Link to="/trilhas">Explorar trilhas</Link>
+                </Button>
+              }
             />
           ) : (
-            <div className="grid gap-3">
-              {certificates.data.slice(0, 3).map((cert) => (
-                <CertificateCardMini key={cert.id} certificate={cert} />
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {inProgress.map((trail) => (
+                <TrailCard key={trail.id} trail={trail} />
               ))}
             </div>
           )}
         </section>
-      </div>
+
+        <section aria-labelledby="disponiveis">
+          <SectionHeading
+            icon={ListChecks}
+            title="Trilhas disponíveis"
+            description="Sugestões para você"
+          />
+          <h2 id="disponiveis" className="sr-only">
+            Trilhas disponíveis
+          </h2>
+          {trails.isPending ? (
+            <CardSkeletonGrid />
+          ) : trails.isError ? (
+            <ErrorState onRetry={() => void trails.refetch()} />
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {available.map((trail) => (
+                <TrailCard key={trail.id} trail={trail} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <div className="grid gap-10 lg:grid-cols-2">
+          <section aria-labelledby="desafios-recentes">
+            <SectionHeading
+              icon={Target}
+              title="Desafios recentes"
+              action={
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/desafios">Novo desafio</Link>
+                </Button>
+              }
+            />
+            <h2 id="desafios-recentes" className="sr-only">
+              Desafios recentes
+            </h2>
+            {history.isPending ? (
+              <div className="surface-card h-56 animate-pulse" aria-busy="true" />
+            ) : history.isError ? (
+              <ErrorState onRetry={() => void history.refetch()} />
+            ) : history.data.length === 0 ? (
+              <EmptyState title="Nenhum desafio ainda" description="Gere seu primeiro desafio." />
+            ) : (
+              <ul className="surface-card divide-y divide-border">
+                {history.data.map((item) => (
+                  <li
+                    key={item.id}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 p-4"
+                  >
+                    <div className="min-w-0 space-y-1.5">
+                      <p className="truncate text-sm font-medium">{item.challengeTitle}</p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <TechBadge technology={item.technology} />
+                        <DifficultyBadge difficulty={item.difficulty} />
+                      </div>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <p
+                        className={
+                          item.status === "passed"
+                            ? "text-sm font-medium text-success"
+                            : "text-sm font-medium text-destructive"
+                        }
+                      >
+                        {item.status === "passed" ? "Aprovado" : "Reprovado"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatShortDate(item.solvedAt)}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section aria-labelledby="certificados-recentes">
+            <SectionHeading
+              icon={Award}
+              title="Certificados conquistados"
+              action={
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/certificados" search={{ id: undefined }}>
+                    Ver todos
+                  </Link>
+                </Button>
+              }
+            />
+            <h2 id="certificados-recentes" className="sr-only">
+              Certificados conquistados
+            </h2>
+            {certificates.isPending ? (
+              <div className="surface-card h-56 animate-pulse" aria-busy="true" />
+            ) : certificates.isError ? (
+              <ErrorState onRetry={() => void certificates.refetch()} />
+            ) : certificates.data.length === 0 ? (
+              <EmptyState
+                title="Nenhum certificado"
+                description="Conclua uma trilha para emitir o primeiro."
+              />
+            ) : (
+              <div className="grid gap-3">
+                {certificates.data.slice(0, 3).map((cert) => (
+                  <CertificateCardMini key={cert.id} certificate={cert} />
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
       </div>
     </ProtectedRoute>
   );
