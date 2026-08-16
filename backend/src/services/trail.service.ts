@@ -1,6 +1,8 @@
 import { AppError } from "../errors/app-error.js";
 import type { TrailRepository } from "../repositories/trail.repository.js";
 import type { Trail, TrailStatus } from "../types/domain.js";
+import { prisma } from "../lib/prisma.js";
+
 export class TrailService {
   constructor(private readonly repository: TrailRepository) {}
   async list(filters: {
@@ -27,12 +29,21 @@ export class TrailService {
     if (!trail) throw new AppError("TRAIL_NOT_FOUND", "Trilha não encontrada.", 404);
     return trail;
   }
-  async enroll(identifier: string) {
+  async enroll(identifier: string, userId: string) {
     const trail = await this.get(identifier);
-    if (trail.status === "not_started") {
-      trail.status = "in_progress";
-      await this.repository.save(trail);
-    }
+    
+    await prisma.trailProgress.upsert({
+      where: { userId_trailId: { userId, trailId: trail.id } },
+      update: {},
+      create: {
+        userId,
+        trailId: trail.id,
+        status: "in_progress",
+        progress: 0,
+        completedModules: []
+      }
+    });
+
     return { trailId: trail.id };
   }
   async save(trail: Trail) {
