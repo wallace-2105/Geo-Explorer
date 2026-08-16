@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CertificadosRouteImport } from './routes/certificados'
 import { Route as DesafiosRouteImport } from './routes/desafios'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as TrilhasIndexRouteImport } from './routes/trilhas.index'
 import { Route as TrilhasIdRouteImport } from './routes/trilhas.$id'
@@ -29,6 +30,11 @@ const CertificadosRoute = CertificadosRouteImport.update({
 const DesafiosRoute = DesafiosRouteImport.update({
   id: '/desafios',
   path: '/desafios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PerfilRoute = PerfilRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/certificados': typeof CertificadosRoute
   '/desafios': typeof DesafiosRoute
+  '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
   '/trilhas/$id': typeof TrilhasIdRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/certificados': typeof CertificadosRoute
   '/desafios': typeof DesafiosRoute
+  '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
   '/trilhas/$id': typeof TrilhasIdRoute
   '/trilhas': typeof TrilhasIndexRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/certificados': typeof CertificadosRoute
   '/desafios': typeof DesafiosRoute
+  '/login': typeof LoginRoute
   '/perfil': typeof PerfilRoute
   '/trilhas/$id': typeof TrilhasIdRoute
   '/trilhas/': typeof TrilhasIndexRoute
@@ -78,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/certificados'
     | '/desafios'
+    | '/login'
     | '/perfil'
     | '/trilhas/$id'
     | '/trilhas/'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/certificados'
     | '/desafios'
+    | '/login'
     | '/perfil'
     | '/trilhas/$id'
     | '/trilhas'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/certificados'
     | '/desafios'
+    | '/login'
     | '/perfil'
     | '/trilhas/$id'
     | '/trilhas/'
@@ -103,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CertificadosRoute: typeof CertificadosRoute
   DesafiosRoute: typeof DesafiosRoute
+  LoginRoute: typeof LoginRoute
   PerfilRoute: typeof PerfilRoute
   TrilhasIdRoute: typeof TrilhasIdRoute
   TrilhasIndexRoute: typeof TrilhasIndexRoute
@@ -129,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/desafios'
       fullPath: '/desafios'
       preLoaderRoute: typeof DesafiosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/perfil': {
@@ -159,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CertificadosRoute: CertificadosRoute,
   DesafiosRoute: DesafiosRoute,
+  LoginRoute: LoginRoute,
   PerfilRoute: PerfilRoute,
   TrilhasIdRoute: TrilhasIdRoute,
   TrilhasIndexRoute: TrilhasIndexRoute,

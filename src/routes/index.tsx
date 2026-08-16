@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award, ArrowRight, Flame, ListChecks, Sparkles, Target, TrendingUp } from "lucide-react";
-import { CertificateCardMini } from "@/components/features/certificates/certificate-card-mini";
+import { CertificateCardMini } from "@/components/certificates/certificate-card-mini";
 import { ProtectedRoute } from "@/components/shared/protected-route";
 import { PageHeader, SectionHeading } from "@/components/shared/page-header";
 import { StatCard, DifficultyBadge, TechBadge } from "@/components/shared/badges";
