@@ -271,6 +271,7 @@ function DashboardPage() {
           )}
         </section>
       </div>
+      </div>
     </ProtectedRoute>
   );
 }

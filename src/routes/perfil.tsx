@@ -189,6 +189,7 @@ function ProfilePage() {
           )}
         </section>
       </div>
+      </div>
     </ProtectedRoute>
   );
 }

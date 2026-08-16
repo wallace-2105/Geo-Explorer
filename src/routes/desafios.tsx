@@ -799,6 +799,7 @@ function ChallengesPage() {
           )}
         </section>
       </div>
+      </div>
     </ProtectedRoute>
   );
 }
