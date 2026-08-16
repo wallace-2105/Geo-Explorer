@@ -16,18 +16,21 @@ export function createMcpTools(services: Services) {
           .parse(input),
       ),
     get_learning_trail: async (input: unknown) => services.trails.get(idSchema.parse(input).id),
-    generate_challenge: async (input: unknown) =>
-      services.challenges.generate(challengeInputSchema.parse(input)),
-    get_challenge: async (input: unknown) => services.challenges.get(idSchema.parse(input).id),
+    generate_challenge: async (input: unknown) => {
+      const parsed = challengeInputSchema.parse(input);
+      return services.challenges.generate({ ...parsed, userId: "mcp-user" });
+    },
+    get_challenge: async (input: unknown) => services.challenges.get(idSchema.parse(input).id, "mcp-user"),
     generate_certificate: async (input: unknown) => {
       const parsed = certificateInputSchema.parse(input);
       const user = await services.users.get(parsed.userId);
       return services.certificates.generate({
         trailId: parsed.trailId,
         userName: parsed.userName ?? user.name,
+        userId: parsed.userId,
       });
     },
-    get_certificate: async (input: unknown) => services.certificates.get(idSchema.parse(input).id),
+    get_certificate: async (input: unknown) => services.certificates.get(idSchema.parse(input).id, "mcp-user"),
     get_learning_progress: async (input: unknown) =>
       services.progress.list(z.object({ userId: z.string().min(1) }).parse(input).userId),
   };
