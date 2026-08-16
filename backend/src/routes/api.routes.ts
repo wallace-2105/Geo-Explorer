@@ -12,6 +12,8 @@ import {
   submissionSchema,
   trailQuerySchema,
 } from "../schemas/http.js";
+import { requireAuth, type AuthenticatedRequest } from "../middlewares/auth.js";
+
 export function createApiRouter(services: Services) {
   const router = Router();
   router.get("/health", (_request, response) => response.json({ data: { status: "ok" } }));
@@ -25,57 +27,56 @@ export function createApiRouter(services: Services) {
   router.get("/trails/:id", async (request, response) =>
     response.json({ data: await services.trails.get(idSchema.parse(request.params).id) }),
   );
-  router.post("/trails/:id/enroll", async (request, response) =>
-    response.json({ data: await services.trails.enroll(idSchema.parse(request.params).id) }),
+  router.post("/trails/:id/enroll", requireAuth, async (request: AuthenticatedRequest, response) =>
+    response.json({ data: await services.trails.enroll(idSchema.parse(request.params).id, request.user!.id) }),
   );
-  router.post("/challenges/generate", async (request, response) =>
+  router.post("/challenges/generate", requireAuth, async (request: AuthenticatedRequest, response) =>
     response
       .status(201)
-      .json({ data: await services.challenges.generate(challengeInputSchema.parse(request.body)) }),
+      .json({ data: await services.challenges.generate({ ...challengeInputSchema.parse(request.body), userId: request.user!.id }) }),
   );
-  router.get("/challenges/history", async (_request, response) =>
-    response.json({ data: await services.challenges.history() }),
+  router.get("/challenges/history", requireAuth, async (request: AuthenticatedRequest, response) =>
+    response.json({ data: await services.challenges.history(request.user!.id) }),
   );
-  router.get("/challenges/:id", async (request, response) =>
-    response.json({ data: await services.challenges.get(idSchema.parse(request.params).id) }),
+  router.get("/challenges/:id", requireAuth, async (request: AuthenticatedRequest, response) =>
+    response.json({ data: await services.challenges.get(idSchema.parse(request.params).id, request.user!.id) }),
   );
-  router.post("/challenges/submissions", async (request, response) =>
+  router.post("/challenges/submissions", requireAuth, async (request: AuthenticatedRequest, response) =>
     response
       .status(201)
-      .json({ data: await services.challenges.submit(submissionSchema.parse(request.body)) }),
+      .json({ data: await services.challenges.submit({ ...submissionSchema.parse(request.body), userId: request.user!.id }) }),
   );
-  router.get("/certificates", async (_request, response) =>
-    response.json({ data: await services.certificates.list() }),
+  router.get("/certificates", requireAuth, async (request: AuthenticatedRequest, response) =>
+    response.json({ data: await services.certificates.list(request.user!.id) }),
   );
-  router.get("/certificates/:id", async (request, response) =>
-    response.json({ data: await services.certificates.get(idSchema.parse(request.params).id) }),
+  router.get("/certificates/:id", requireAuth, async (request: AuthenticatedRequest, response) =>
+    response.json({ data: await services.certificates.get(idSchema.parse(request.params).id, request.user!.id) }),
   );
-  router.post("/certificates", async (request, response) => {
+  router.post("/certificates", requireAuth, async (request: AuthenticatedRequest, response) => {
     const input = certificateInputSchema.parse(request.body);
-    const user = await services.users.get(input.userId);
+    const user = await services.users.get(request.user!.id, request.user);
     response.status(201).json({
       data: await services.certificates.generate({
         trailId: input.trailId,
         userName: input.userName ?? user.name,
+        userId: request.user!.id,
       }),
     });
   });
-  router.get("/progress/:userId", async (request, response) =>
+  router.get("/progress", requireAuth, async (request: AuthenticatedRequest, response) =>
     response.json({
-      data: await services.progress.list(
-        z.object({ userId: z.string().min(1) }).parse(request.params).userId,
-      ),
+      data: await services.progress.list(request.user!.id),
     }),
   );
-  router.post("/progress", async (request, response) =>
+  router.post("/progress", requireAuth, async (request: AuthenticatedRequest, response) =>
     response.json({
-      data: await services.progress.update(progressInputSchema.parse(request.body)),
+      data: await services.progress.update({ ...progressInputSchema.parse(request.body), userId: request.user!.id }),
     }),
   );
-  router.get("/me", async (_request, response) =>
-    response.json({ data: await services.users.get() }),
+  router.get("/me", requireAuth, async (request: AuthenticatedRequest, response) =>
+    response.json({ data: await services.users.get(request.user!.id, request.user) }),
   );
-  router.get("/users/:id", async (request, response) =>
+  router.get("/users/:id", requireAuth, async (request: AuthenticatedRequest, response) =>
     response.json({ data: await services.users.get(idSchema.parse(request.params).id) }),
   );
   router.use("/python", createPythonRouter());

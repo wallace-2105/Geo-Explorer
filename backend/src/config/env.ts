@@ -8,5 +8,6 @@ const envSchema = z.object({
   AI_API_KEY: z.string().optional(),
   AI_MODEL: z.string().default("gpt-4.1-mini"),
   AI_BASE_URL: z.string().url().optional(),
+  SUPABASE_JWT_SECRET: z.string().min(1, "O JWT Secret do Supabase é obrigatório"),
 });
 export const env = envSchema.parse(process.env);
