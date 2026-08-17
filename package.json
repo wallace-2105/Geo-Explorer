@@ -10,7 +10,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
-    "build:api": "prisma generate && tsc -p backend/tsconfig.json",
+    "build:api": "prisma generate --schema=backend/prisma/schema.prisma && tsc -p backend/tsconfig.json",
     "start:api": "node backend/dist/src/server.js",
     "test": "vitest run backend/tests",
     "typecheck": "tsc --noEmit && tsc -p backend/tsconfig.json --noEmit",
