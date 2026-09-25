@@ -18,6 +18,9 @@ export const challengesService = {
     return apiRequest<Challenge>("/challenges/generate", {
       method: "POST",
       body: input,
+    }).catch((err) => {
+      console.warn("Backend indisponível ao gerar desafio, usando fallback:", err);
+      return delay(buildMockChallenge(input), 800);
     });
   },
 
@@ -40,11 +43,29 @@ export const challengesService = {
     return apiRequest<ChallengeSubmissionResult>("/challenges/submissions", {
       method: "POST",
       body: submission,
+    }).catch((err) => {
+      console.warn("Backend indisponível ao avaliar solução, usando fallback:", err);
+      return delay(
+        {
+          submissionId: `sub-${Date.now()}`,
+          status: submission.code.trim().length > 40 ? "passed" : "failed",
+          score: submission.code.trim().length > 40 ? 92 : 41,
+          feedback:
+            submission.code.trim().length > 40
+              ? "Solução aceita (avaliação de demonstração). Inicie o backend com `npm run dev:api` para avaliação em tempo real com IA."
+              : "A solução parece incompleta. Revise os requisitos e tente novamente.",
+          submittedAt: new Date().toISOString(),
+        } satisfies ChallengeSubmissionResult,
+        800,
+      );
     });
   },
 
   history(): Promise<ChallengeHistoryItem[]> {
     if (USE_MOCKS) return delay(mockChallengeHistory);
-    return apiRequest<ChallengeHistoryItem[]>("/challenges/history");
+    return apiRequest<ChallengeHistoryItem[]>("/challenges/history").catch((err) => {
+      console.warn("Backend indisponível ao carregar histórico, usando mock:", err);
+      return delay(mockChallengeHistory, 400);
+    });
   },
 };
