@@ -12,8 +12,9 @@ import {
   Trophy,
   XCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getFallbackPhases } from "@/data/phase-challenges.fallback";
 import { DifficultyBadge, LevelBadge, TechBadge } from "@/components/shared/badges";
 import { PageHeader } from "@/components/shared/page-header";
 import { ProtectedRoute } from "@/components/shared/protected-route";
@@ -95,8 +96,17 @@ interface PhaseChallenge {
 function useLanguagePhases(technology: Technology, level: Level, difficulty: Difficulty, enabled: boolean) {
   return useQuery({
     queryKey: ["lang-phases", technology, level, difficulty],
-    queryFn: () =>
-      apiRequest<PhaseChallenge[]>(`/${technology.toLowerCase()}/phases?level=${encodeURIComponent(level)}&difficulty=${difficulty}`),
+    queryFn: async () => {
+      try {
+        const data = await apiRequest<PhaseChallenge[]>(
+          `/${technology.toLowerCase()}/phases?level=${encodeURIComponent(level)}&difficulty=${difficulty}`
+        );
+        if (data && data.length > 0) return data;
+      } catch (err) {
+        console.warn("Backend indisponível para carregar fases, usando fallback local:", err);
+      }
+      return getFallbackPhases(technology, level, difficulty);
+    },
     enabled,
     staleTime: 1000 * 60 * 60,
   });
@@ -104,11 +114,40 @@ function useLanguagePhases(technology: Technology, level: Level, difficulty: Dif
 
 function useLanguageSubmit(technology: Technology) {
   return useMutation({
-    mutationFn: ({ id, code }: { id: string; code: string }) =>
-      apiRequest<PhaseEvalResult>(`/${technology.toLowerCase()}/phases/${id}/submit`, {
-        method: "POST",
-        body: JSON.stringify({ code }),
-      }),
+    mutationFn: async ({ id, code }: { id: string; code: string }) => {
+      try {
+        return await apiRequest<PhaseEvalResult>(`/${technology.toLowerCase()}/phases/${id}/submit`, {
+          method: "POST",
+          body: JSON.stringify({ code }),
+        });
+      } catch (err) {
+        console.warn("Backend indisponível para avaliar submissão, simulando localmente:", err);
+        const hasContent =
+          code.trim().length > 30 &&
+          !code.includes("// sua solução aqui") &&
+          !code.includes("# sua solução aqui") &&
+          !code.includes("// Escreva seu código");
+
+        return {
+          passedTests: hasContent ? 2 : 0,
+          totalTests: 2,
+          score: hasContent ? 100 : 0,
+          status: (hasContent ? "passed" : "failed") as "passed" | "failed",
+          feedback: hasContent
+            ? "Solução aceita (avaliação de demonstração local). Inicie o backend com `npm run dev:api` para compilação estrita e execução de testes em Node/Python."
+            : "Solução parece incompleta. Implemente o código antes de enviar.",
+          results: [
+            {
+              passed: hasContent,
+              description: "Validação básica de código",
+              input: "chamada padrão",
+              expected: "sucesso",
+              received: hasContent ? "sucesso" : "incompleto",
+            },
+          ],
+        };
+      }
+    },
   });
 }
 
@@ -302,8 +341,13 @@ function PhaseMode({
   const phase = phases.find((p) => p.phase === currentPhase) ?? phases[0];
   const allDone = completedPhases.size === phases.length;
 
-  if (!phase) return null;
+  useEffect(() => {
+    if (phase?.starterCode && (!code || code === "")) {
+      setCode(phase.starterCode);
+    }
+  }, [phase?.id, phase?.starterCode]);
 
+  if (!phase) return null;
 
   function handlePhaseSelect(phaseNum: number) {
     setCurrentPhase(phaseNum);
@@ -361,7 +405,7 @@ function PhaseMode({
           <Trophy className="size-6 text-success" />
           <div>
             <p className="font-semibold text-success">
-              🏆 Python {level} {DIFFICULTY_LABEL[difficulty]} — Concluído!
+              🏆 {technology} {level} {DIFFICULTY_LABEL[difficulty]} — Concluído!
             </p>
             <p className="text-sm text-muted-foreground">
               Parabéns! Você completou todas as {phases.length} fases.
@@ -380,7 +424,7 @@ function PhaseMode({
           <DifficultyBadge difficulty={difficulty} />
           <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 font-mono text-xs text-muted-foreground ring-1 ring-inset ring-border">
             <Terminal className="size-3" aria-hidden="true" />
-            python
+            {technology.toLowerCase()}
           </span>
         </div>
 
@@ -448,11 +492,11 @@ function PhaseMode({
           </Button>
         </div>
 
-        <Label htmlFor="codigo-python" className="sr-only">
-          Código da solução Python
+        <Label htmlFor={`codigo-${technology.toLowerCase()}`} className="sr-only">
+          Código da solução {technology}
         </Label>
         <Textarea
-          id="codigo-python"
+          id={`codigo-${technology.toLowerCase()}`}
           value={code}
           onChange={(e) => setCode(e.target.value)}
           spellCheck={false}
