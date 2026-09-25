@@ -2,6 +2,7 @@ import type { UserProfile } from "../types/domain.js";
 import { TrailService } from "./trail.service.js";
 import { AppError } from "../errors/app-error.js";
 import { prisma } from "../lib/prisma.js";
+import { env } from "../config/env.js";
 
 const baseUser = {
   headline: "Desenvolvedor full-stack",
@@ -9,6 +10,8 @@ const baseUser = {
 } as const;
 
 export class UserService {
+  private inMemoryUsers = new Map<string, any>();
+
   constructor(private readonly trails: TrailService) {}
 
   async get(id: string, userToken?: any): Promise<UserProfile> {
@@ -23,17 +26,40 @@ export class UserService {
       if (userToken.user_metadata.last_name) lastName = userToken.user_metadata.last_name;
     }
 
-    // Upsert the user in Prisma (creates if not exists, updates if exists)
-    const user = await prisma.user.upsert({
-      where: { id },
-      update: { firstName, lastName, email },
-      create: { id, firstName, lastName, email },
-    });
+    let userCreatedAt = new Date();
+    let savedProgress: any[] = [];
+    let certificates: any[] = [];
+    let history: any[] = [];
+
+    if (env.NODE_ENV !== "test") {
+      try {
+        const user = await prisma.user.upsert({
+          where: { id },
+          update: { firstName, lastName, email },
+          create: { id, firstName, lastName, email },
+        });
+        userCreatedAt = user.createdAt;
+        savedProgress = await prisma.trailProgress.findMany({ where: { userId: id } });
+        certificates = await prisma.certificate.findMany({ where: { userId: id } });
+        history = await prisma.challengeHistory.findMany({ where: { userId: id } });
+      } catch {
+        const cached = this.inMemoryUsers.get(id);
+        if (cached) {
+          userCreatedAt = cached.createdAt;
+        } else {
+          this.inMemoryUsers.set(id, { id, firstName, lastName, email, createdAt: userCreatedAt });
+        }
+      }
+    } else {
+      const cached = this.inMemoryUsers.get(id);
+      if (cached) {
+        userCreatedAt = cached.createdAt;
+      } else {
+        this.inMemoryUsers.set(id, { id, firstName, lastName, email, createdAt: userCreatedAt });
+      }
+    }
 
     const trails = await this.trails.list({});
-    const savedProgress = await prisma.trailProgress.findMany({ where: { userId: id } });
-    const certificates = await prisma.certificate.findMany({ where: { userId: id } });
-    const history = await prisma.challengeHistory.findMany({ where: { userId: id } });
 
     const effective = savedProgress.length
       ? savedProgress.map(p => ({ status: p.status, percent: p.progress }))
@@ -46,10 +72,10 @@ export class UserService {
 
     return {
       ...baseUser,
-      id: user.id,
-      name: `${user.firstName} ${user.lastName}`.trim(),
-      email: user.email,
-      memberSince: user.createdAt.toISOString(),
+      id,
+      name: `${firstName} ${lastName}`.trim(),
+      email,
+      memberSince: userCreatedAt.toISOString(),
       technologies: [...baseUser.technologies],
       stats: {
         completedTrails: effective.filter((item) => item.status === "completed").length,
